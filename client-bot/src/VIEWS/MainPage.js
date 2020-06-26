@@ -1,62 +1,109 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import { Paper } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import SendSharpIcon from "@material-ui/icons/SendSharp";
+import MicIcon from "@material-ui/icons/Mic";
 
-const drawerWidth = 240;
-
+import {
+  Paper,
+  ListItemText,
+  ListItemIcon,
+  IconButton,
+  Divider,
+  Typography,
+  CssBaseline,
+  List,
+  Toolbar,
+  AppBar,
+  Drawer,
+  ListItem,
+  TextField,
+} from "@material-ui/core";
 const DummyData = [
-    {
-        ID: "Hafidz Tampan",
-        message: "gimana guys aman ?"
-    },
-    {
-        ID: "Yodi mamen",
-        message: "santuuy fidz, valorant skuyy"
-    },
-    {
-        ID: "kalys Dermawan",
-        message: "SKUUUY"
-    },
-    {
-        ID: "Faris ganteng",
-        message: "duh lagi ga niat main nih. segala berulah lagi.. aduhlah"
-    }
-]
+  {
+    name: "YODI",
+    message: "SKUYY",
+  },
+  {
+    name: "Fariss",
+    message: "SKUYY 2",
+  },
+  {
+    name: "Hafidz",
+    message: "SKUYY 4",
+  },
+  {
+    name: "Kalys",
+    message: "SKUYY 55",
+  },
+];
 
-export default function PermanentDrawerLeft() {
+export default function MainPage() {
   const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar
+        position="absolute"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" noWrap>
             Chating Room
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
-        className={classes.drawer}
         variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
         classes={{
-          paper: classes.drawerPaper,
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
         }}
-        anchor="left"
       >
-        <div className={classes.toolbar} />
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+          </IconButton>
+        </div>
         <Divider />
         <List>
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
@@ -81,44 +128,106 @@ export default function PermanentDrawerLeft() {
         </List>
       </Drawer>
       <main className={classes.content}>
-        {/* <div className={classes.toolbar} /> */}
-        {DummyData.map((e,i) => {
-            return <Paper mb={10}>
-                {e.ID}
+        <div className={classes.toolbar} />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ height: "70vh" }}>
+            {DummyData.map((el, i) => {
+              return (
+                <Typography paragraph>
+                  {el.name}
+                  <Paper>{el.message}</Paper>
+                </Typography>
+              );
+            })}
+          </div>
+          <div>
+            <Paper>
+              <form>
+                <IconButton color="primary" backgroundColor="secondary">
+                  <MicIcon />
+                </IconButton>
+                <TextField
+                  id="filled-basic"
+                  label="Ketik Pesan .."
+                  style={{ width: "70vw" }}
+                />
+                <IconButton color="primary">
+                  <SendSharpIcon />
+                </IconButton>
+              </form>
             </Paper>
-        })}
+          </div>
+        </div>
       </main>
-      {/* <div className={classes.toolbar}>
-        <form className={classes.toolbar} noValidate>
-          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-        </form>
-      </div> */}
     </div>
   );
 }
 
+const drawerWidth = 240;
+
 const useStyles = makeStyles((theme) => ({
-    root: {
-      display: "flex",
+  root: {
+    display: "flex",
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: "none",
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: "hidden",
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9) + 1,
     },
-    appBar: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    content: {
-      flexGrow: 1,
-    //   backgroundColor: theme.palette.background.default,
-      padding: theme.spacing(3),
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  }));
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.background.primary,
+    height: "100vh",
+    display: "flex",
+    marginTop: 60,
+    // position: "static"
+  },
+}));
