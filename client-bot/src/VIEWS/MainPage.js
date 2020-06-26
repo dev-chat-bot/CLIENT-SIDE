@@ -7,7 +7,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import SendSharpIcon from "@material-ui/icons/SendSharp";
-import MicIcon from "@material-ui/icons/Mic";
+import SpeechRecognition from "../Components/SpeechRecognition";
 
 import {
   Paper,
@@ -133,19 +133,18 @@ export default function MainPage() {
           <div style={{ height: "70vh" }}>
             {DummyData.map((el, i) => {
               return (
-                <Typography paragraph>
+                <Paper key={i}>
                   {el.name}
-                  <Paper>{el.message}</Paper>
-                </Typography>
+                  <Typography paragraph>
+                    {el.message}
+                  </Typography>
+                </Paper>
               );
             })}
           </div>
           <div>
             <Paper>
               <form>
-                <IconButton color="primary" backgroundColor="secondary">
-                  <MicIcon />
-                </IconButton>
                 <TextField
                   id="filled-basic"
                   label="Ketik Pesan .."
@@ -154,6 +153,7 @@ export default function MainPage() {
                 <IconButton color="primary">
                   <SendSharpIcon />
                 </IconButton>
+                <SpeechRecognition />
               </form>
             </Paper>
           </div>
