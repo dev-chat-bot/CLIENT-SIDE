@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import FirstPage from './VIEWS/firstPage'
+import FirstPage from './VIEWS/FirstPage'
 
 function App() {
   return (
-    <div className="App">
-     <FirstPage/>
+    <div style={{alignItems: "center", justifyContent: "center", display: "flex", backgroundColor: "black", height: "100vh"}}>
+      <FirstPage />
     </div>
   );
 }
