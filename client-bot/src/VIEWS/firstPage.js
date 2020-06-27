@@ -40,6 +40,7 @@ export default function FirstPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const message = useSelector((state) => state.error)
   const dispatch = useDispatch();
   const history = useHistory();
   const isLogin = useSelector((state) => state.isLogin);
@@ -48,13 +49,28 @@ export default function FirstPage() {
     if (isLogin || localStorage.token) history.push("/main");
   }, [isLogin]);
 
-  function handleSubmit(event) {
+  const resetError = () => {
+    setTimeout(() => {
+      setError('')
+    }, 3000)
+  }
+
+  const handleSubmit = (event) => {
     event.preventDefault();
     let payload = {
       username,
       password,
     };
-    dispatch(SignIn(payload));
+    if(username && password){
+      dispatch(SignIn(payload))
+    } else {
+      if(!username) {
+        setError("Username is empty")
+      } else {
+        setError("Password is empty")
+      }
+      resetError()
+    };
     if (isLogin) history.push("/main");
   }
 

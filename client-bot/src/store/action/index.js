@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/";
+const baseUrl = "http://localhost:3000/";
 
 
 export const SET_USER = "SET_USER";
@@ -32,7 +32,7 @@ export const SignUp = (data) => {
       dispatch(setIsLogin(true))
       localStorage.setItem("token", NewUser.data.access_token);
     } catch (error) {
-      dispatch(setError(error));
+      dispatch(setError(error.response.data.error));
       setTimeout(() => {
         dispatch(setError(""));
       }, 5000);
@@ -53,7 +53,7 @@ export const SignIn = (data) => {
       dispatch(setIsLogin(true))
       localStorage.setItem("token", user.data.access_token);
     } catch (error) {
-      dispatch(setError(error));
+      dispatch(setError(error.response.data.error));
       setTimeout(() => {
         dispatch(setError(""));
       }, 5000);

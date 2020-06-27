@@ -4,7 +4,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { Link, TextField, Button, Typography } from "@material-ui/core";
 import {SignUp} from '../store/action/index'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function ModalFirstPage(props) {
   // console.log(props, "ini pros");
@@ -14,6 +14,7 @@ export default function ModalFirstPage(props) {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
+  const message = useSelector((state) => state.error)
   const dispatch = useDispatch()
 
 
