@@ -6,9 +6,7 @@ import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import SendSharpIcon from "@material-ui/icons/SendSharp";
 import SpeechRecognition from "../Components/SpeechRecognition";
-
 import {
   Paper,
   ListItemText,
@@ -22,24 +20,29 @@ import {
   AppBar,
   Drawer,
   ListItem,
-  TextField,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { useDispatch } from "react-redux";
+import { setIsLogin } from "../store/action/index";
+
 const DummyData = [
   {
     name: "YODI",
-    message: "SKUYY",
+    message: "Ku menangisss membayangakan",
   },
   {
     name: "Fariss",
-    message: "SKUYY 2",
+    message:
+      "Betapa kejamnya dirimu atas diriku kau duakan cinta ini, kau pergi bersamanya ",
   },
   {
     name: "Hafidz",
-    message: "SKUYY 4",
+    message: "Ku menangis melepaskan Kepergian dirimu dari sisi hidupku",
   },
   {
     name: "Kalys",
-    message: "SKUYY 55",
+    message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
   },
 ];
 
@@ -47,6 +50,8 @@ export default function MainPage() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -54,6 +59,13 @@ export default function MainPage() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleExitApp = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    dispatch(setIsLogin(false));
+    history.push("/");
   };
 
   return (
@@ -80,6 +92,13 @@ export default function MainPage() {
           <Typography variant="h6" noWrap>
             Chating Room
           </Typography>
+          <IconButton
+            color="inherit"
+            edge="end"
+            onClick={(event) => handleExitApp(event)}
+          >
+            <ExitToAppIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -133,28 +152,16 @@ export default function MainPage() {
           <div style={{ height: "70vh" }}>
             {DummyData.map((el, i) => {
               return (
-                <Paper key={i}>
+                <div key={i}>
                   {el.name}
-                  <Typography paragraph>
-                    {el.message}
-                  </Typography>
-                </Paper>
+                  <Paper>{el.message}</Paper>
+                </div>
               );
             })}
           </div>
           <div>
             <Paper>
-              <form>
-                <TextField
-                  id="filled-basic"
-                  label="Ketik Pesan .."
-                  style={{ width: "70vw" }}
-                />
-                <IconButton color="primary">
-                  <SendSharpIcon />
-                </IconButton>
-                <SpeechRecognition />
-              </form>
+              <SpeechRecognition />
             </Paper>
           </div>
         </div>

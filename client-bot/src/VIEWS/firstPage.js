@@ -1,5 +1,5 @@
-import React from "react";
-import {CssBaseline} from '@material-ui/core'
+import React, { useState, useEffect } from "react";
+import { CssBaseline } from "@material-ui/core";
 import {
   Avatar,
   Button,
@@ -18,10 +18,13 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "../Components/Modal";
 import { Facebook, GitHub } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { SignIn } from "../store/action/index";
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="black" align="center">
+    <Typography variant="body2" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
         ADEPs
@@ -29,6 +32,128 @@ function Copyright() {
       {new Date().getFullYear()}
       {"."}
     </Typography>
+  );
+}
+
+export default function FirstPage() {
+  const classes = useStyles();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const isLogin = useSelector((state) => state.isLogin);
+
+  useEffect(() => {
+    if (isLogin || localStorage.token) history.push("/main");
+  }, [isLogin]);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    let payload = {
+      username,
+      password,
+    };
+    dispatch(SignIn(payload));
+    if (isLogin) history.push("/main");
+  }
+
+  return (
+    <div
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        display: "flex",
+        backgroundColor: "black",
+        height: "100vh",
+      }}
+    >
+      <CssBaseline />
+      <Container component="main" maxWidth="xs">
+        <Card width="50%">
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <AccountCircleOutlinedIcon />
+            </Avatar>
+            {error ? (
+              <Typography component="h1" variant="h5">
+                {error}
+              </Typography>
+            ) : (
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+            )}
+
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={(event) => handleSubmit(event)}
+            >
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={username}
+                id="email"
+                label="Email / Username"
+                name="username"
+                autoComplete="email"
+                autoFocus
+                onChange={(event) => setUsername(event.target.value)}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                value={password}
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                  <Modal classes={classes}></Modal>
+                </Grid>
+                <Grid item>
+                  <IconButton color="primary">
+                    <Facebook />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <GitHub />
+                  </IconButton>
+                  <Button>Google</Button>
+                </Grid>
+              </Grid>
+            </form>
+          </div>
+          <Box mt={4} mb={2}>
+            <Copyright />
+          </Box>
+        </Card>
+      </Container>
+    </div>
   );
 }
 
@@ -67,94 +192,3 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-
-export default function SignIn() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <div
-    style={{
-      alignItems: "center",
-      justifyContent: "center",
-      display: "flex",
-      backgroundColor: "black",
-      height: "100vh",
-    }}>
-      <CssBaseline />
-      <Container component="main" maxWidth="xs">
-        <Card alignItems="center" justifyContent="center" width="50%">
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <AccountCircleOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                  <Modal
-                    setOpen={setOpen}
-                    classes={classes}
-                    Open={open}
-                  ></Modal>
-                </Grid>
-                <Grid item>
-                  <IconButton>
-                    <Facebook />
-                  </IconButton>
-                  <IconButton>
-                    <GitHub />
-                  </IconButton>
-                  <Button>Google</Button>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-          <Box mt={4} mb={2}>
-            <Copyright />
-          </Box>
-        </Card>
-      </Container>
-        </div>
-  );
-}
