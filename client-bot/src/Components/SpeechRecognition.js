@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SpeechRecognition from "react-speech-recognition";
 import IconButton from "@material-ui/core/IconButton";
 import MicIcon from "@material-ui/icons/Mic";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import SendSharpIcon from "@material-ui/icons/SendSharp";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 
@@ -12,6 +12,9 @@ const propTypes = {
   transcript: PropTypes.string,
   resetTranscript: PropTypes.func,
   browserSupportsSpeechRecognition: PropTypes.bool,
+  recognition: PropTypes.object,
+  interimTranscript: PropTypes.string,
+  finalTranscript: PropTypes.string
 };
 
 const Dictaphone = ({
@@ -19,10 +22,14 @@ const Dictaphone = ({
   resetTranscript,
   startListening,
   stopListening,
+  recognition,
+  interimTranscript,
+  finalTranscript,
   browserSupportsSpeechRecognition,
 }) => {
   const [status, setStatus] = useState(false);
   const [text, setText] = useState("");
+  recognition.lang = "en-US"
 
   if (!browserSupportsSpeechRecognition) {
     return null;
@@ -73,7 +80,7 @@ const Dictaphone = ({
         <TextField
           id="filled-basic"
           placeholder="ketik pesan ..."
-          value={ transcript ? transcript : text} 
+          value={ finalTranscript ? finalTranscript : text}
           style={{ width: "70vw" }}
           editable="true"
           multiline={true}
@@ -83,13 +90,16 @@ const Dictaphone = ({
           <SendSharpIcon />
         </IconButton>
       </form>
+      <Typography variant="subtitle1">
+        {interimTranscript}
+      </Typography>
     </div>
   );
 };
 
 Dictaphone.propTypes = propTypes;
 const options = {
-  autoStart: false,
+  autoStart: false
 };
 
 export default SpeechRecognition(options)(Dictaphone);
