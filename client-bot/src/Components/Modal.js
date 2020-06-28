@@ -1,22 +1,34 @@
-import React, {useState} from "react";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { Link, TextField, Button, Typography } from "@material-ui/core";
-import {SignUp} from '../store/action/index'
-import { useDispatch, useSelector } from 'react-redux'
+import { TextField, Button, Typography } from "@material-ui/core";
+import { SignUp } from "../store/action/index";
+import { useDispatch, useSelector } from "react-redux";
+import ReactDOM from "react-dom";
+import {
+  setEmail,
+  setUsername,
+  setPassword,
+  setConfirmPassword,
+} from "../store/action/index";
 
-export default function ModalFirstPage(props) {
+const ModalFirstPage = forwardRef((props, ref) => {
   // console.log(props, "ini pros");
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const message = useSelector((state) => state.error)
-  const dispatch = useDispatch()
+  const [error, setError] = useState("");
+  const email = useSelector((state) => state.email);
+  const password = useSelector((state) => state.password);
+  const username = useSelector((state) => state.username);
+  const confirmPassword = useSelector((state) => state.confirmPassword);
+  const dispatch = useDispatch();
 
+  useImperativeHandle(ref, () => {
+    return {
+      openModal: () => handleOpen(),
+      close: () => handleClose(),
+    };
+  });
 
   // function Modal
   const handleOpen = () => {
@@ -33,16 +45,16 @@ export default function ModalFirstPage(props) {
     // console.log(name, value)
     switch (name) {
       case "email":
-        setEmail(value);
+        dispatch(setEmail(value));
         break;
       case "username":
-        setUsername(value);
+        dispatch(setUsername(value));
         break;
       case "password":
-        setPassword(value);
+        dispatch(setPassword(value));
         break;
       case "confirmPassword":
-        setConfirmPassword(value);
+        dispatch(setConfirmPassword(value));
         break;
       default:
         break;
@@ -51,16 +63,13 @@ export default function ModalFirstPage(props) {
 
   const handleSubmitModal = (event) => {
     event.preventDefault();
-    if (
-      !email ||
-      !password ||
-      !username ||
-      !confirmPassword
-    ) {
-      setError("please fill all form :D");
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+    if (!email || !password || !username || !confirmPassword) {
+      setError("please fill all field");
+      if (error) {
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      }
     } else {
       const payload = {
         email: email,
@@ -68,108 +77,108 @@ export default function ModalFirstPage(props) {
         username: username,
         confirmPassword: confirmPassword,
       };
-      dispatch(SignUp(payload))
+      dispatch(SignUp(payload));
     }
   };
 
-  return (
-    <div>
-      {/* <button type="button" onClick={handleOpen}>
-      "Don't have an account? Sign Up"
-      </button> */}
-      <p>
-        Don't have an account? <Link onClick={(event) => handleOpen(event)}>Sign Up</Link>
-      </p>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={props.classes.modal}
-        open={open}
-        onClose={(event) => handleClose(event)}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={props.classes.paperModal}>
-            <form
-              className={props.classes.form}
-              noValidate
-              onSubmit={(event) => handleSubmitModal(event)}
-            >
-              <Typography component="h1" variant="h5">
-                Sign Up
-              </Typography>
-              { error && <Typography component="h1" variant="h5">
-                {error}
-              </Typography>}
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={email}
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={(event) => handleChange(event)}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={username}
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                onChange={(event) => handleChange(event)}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={password}
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={(event) => handleChange(event)}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={confirmPassword}
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                id="confirmPassword"
-                autoComplete="current-password"
-                onChange={(event) => handleChange(event)}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={props.classes.submit}
+  if (open) {
+    return ReactDOM.createPortal(
+      <div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          className={props.classes.modal}
+          open={open}
+          onClose={(event) => handleClose(event)}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+        >
+          <Fade in={open}>
+            <div className={props.classes.paperModal}>
+              <form
+                className={props.classes.form}
+                noValidate
+                onSubmit={(event) => handleSubmitModal(event)}
               >
-                Sign Up
-              </Button>
-            </form>
-          </div>
-        </Fade>
-      </Modal>
-    </div>
-  );
-}
+                <Typography component="h1" variant="h5">
+                  Sign Up
+                </Typography>
+                {error && (
+                  <Typography component="h1" variant="h5">
+                    {error}
+                  </Typography>
+                )}
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={email}
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={(event) => handleChange(event)}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={username}
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  onChange={(event) => handleChange(event)}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={password}
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={(event) => handleChange(event)}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={confirmPassword}
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmPassword"
+                  autoComplete="current-password"
+                  onChange={(event) => handleChange(event)}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={props.classes.submit}
+                >
+                  Sign Up
+                </Button>
+              </form>
+            </div>
+          </Fade>
+        </Modal>
+      </div>,
+      document.getElementById("modal-root")
+    );
+  }
+
+  return null;
+});
+
+export default ModalFirstPage;

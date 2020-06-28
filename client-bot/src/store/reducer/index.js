@@ -1,9 +1,23 @@
-import { SET_USER, SET_ERROR, SET_ISLOGIN } from "../action/index";
+import {
+  SET_USER,
+  SET_ERROR,
+  SET_ISLOGIN,
+  SET_CONFIRMPASSWORD,
+  SET_PASSWORD,
+  SET_EMAIL,
+  SET_USERNAME,
+  SET_CHATLIST
+} from "../action/index";
 
 const initialState = {
   user: {},
   error: "",
-  isLogin: false
+  isLogin: false,
+  confirmPassword: "",
+  password: "",
+  email: "",
+  username: "",
+  messageChatList: []
 };
 
 function reducer(state = initialState, action) {
@@ -16,6 +30,17 @@ function reducer(state = initialState, action) {
       return { ...state, error: payload };
     case SET_ISLOGIN:
       return { ...state, isLogin: payload };
+    case SET_EMAIL:
+      return { ...state, email: payload };
+    case SET_PASSWORD:
+      return { ...state, password: payload };
+    case SET_USERNAME:
+      return { ...state, username: payload };
+    case SET_CONFIRMPASSWORD:
+      return { ...state, confirmPassword: payload };
+    case SET_CHATLIST:
+      const data = state.messageChatList
+      return { ...state, messageChatList: data.concat(payload) };
     default:
       return { ...state };
   }
