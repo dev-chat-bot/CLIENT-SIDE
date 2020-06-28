@@ -13,14 +13,18 @@ import {
   Link,
   Card,
   IconButton,
+  Snackbar,
 } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import Modal from "../Components/Modal";
-import { Facebook, GitHub } from "@material-ui/icons";
+import ModalFirstPage from "../Components/Modal";
+import { GitHub } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { SignIn } from "../store/action/index";
 import { useHistory } from "react-router-dom";
+import { setUsername, setPassword, LoginFacebook } from "../store/action/index";
+// import FacebookLoginButton from "../Components/FacebookLoginButton";
+// import GoogleLogin from "react-google-login";
 
 function Copyright() {
   return (
@@ -37,23 +41,29 @@ function Copyright() {
 
 export default function FirstPage() {
   const classes = useStyles();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const message = useSelector((state) => state.error)
+  const message = useSelector((state) => state.error);
   const dispatch = useDispatch();
   const history = useHistory();
   const isLogin = useSelector((state) => state.isLogin);
+  const username = useSelector((state) => state.username);
+  const password = useSelector((state) => state.password);
+  const modalRef = React.useRef();
 
   useEffect(() => {
     if (isLogin || localStorage.token) history.push("/main");
-  }, [isLogin]);
+    
+  }, [isLogin, history]);
 
   const resetError = () => {
     setTimeout(() => {
-      setError('')
-    }, 3000)
-  }
+      setError("");
+    }, 3000);
+  };
+
+  const handleOpen = () => {
+    modalRef.current.openModal();
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -61,18 +71,18 @@ export default function FirstPage() {
       username,
       password,
     };
-    if(username && password){
-      dispatch(SignIn(payload))
+    if (username && password) {
+      dispatch(SignIn(payload));
     } else {
-      if(!username) {
-        setError("Username is empty")
+      if (!username) {
+        setError("Username is empty");
       } else {
-        setError("Password is empty")
+        setError("Password is empty");
       }
-      resetError()
-    };
+      resetError();
+    }
     if (isLogin) history.push("/main");
-  }
+  };
 
   return (
     <div
@@ -96,9 +106,23 @@ export default function FirstPage() {
                 {error}
               </Typography>
             ) : (
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
+              <>
+                <div>
+                  <Typography component="h1" variant="h5">
+                    Sign in
+                  </Typography>
+                </div>
+                <div>
+                  {message && (
+                    <Snackbar
+                      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                      open={message ? true : false}
+                      message={message}
+                      key="topcenter"
+                    />
+                  )}
+                </div>
+              </>
             )}
 
             <form
@@ -117,7 +141,7 @@ export default function FirstPage() {
                 name="username"
                 autoComplete="email"
                 autoFocus
-                onChange={(event) => setUsername(event.target.value)}
+                onChange={(event) => dispatch(setUsername(event.target.value))}
               />
               <TextField
                 variant="outlined"
@@ -130,7 +154,7 @@ export default function FirstPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={(event) => dispatch(setPassword(event.target.value))}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -150,12 +174,17 @@ export default function FirstPage() {
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                  <Modal classes={classes}></Modal>
+                  <p>
+                    Don't have an account?{" "}
+                    <Link onClick={(event) => handleOpen(event)}>Sign Up</Link>
+                  </p>
+                  <ModalFirstPage
+                    classes={classes}
+                    ref={modalRef}
+                  ></ModalFirstPage>
                 </Grid>
                 <Grid item>
-                  <IconButton color="primary">
-                    <Facebook />
-                  </IconButton>
+                  {/* <FacebookLoginButton /> */}
                   <IconButton color="inherit">
                     <GitHub />
                   </IconButton>

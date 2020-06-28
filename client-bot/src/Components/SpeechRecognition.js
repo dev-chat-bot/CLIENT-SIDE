@@ -6,6 +6,8 @@ import MicIcon from "@material-ui/icons/Mic";
 import { TextField, Typography } from "@material-ui/core";
 import SendSharpIcon from "@material-ui/icons/SendSharp";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
+import { useDispatch } from "react-redux";
+import { UserRequest, setChatList } from "../store/action/index";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -14,7 +16,7 @@ const propTypes = {
   browserSupportsSpeechRecognition: PropTypes.bool,
   recognition: PropTypes.object,
   interimTranscript: PropTypes.string,
-  finalTranscript: PropTypes.string
+  finalTranscript: PropTypes.string,
 };
 
 const Dictaphone = ({
@@ -29,15 +31,17 @@ const Dictaphone = ({
 }) => {
   const [status, setStatus] = useState(false);
   const [text, setText] = useState("");
-  recognition.lang = "en-US"
+  const dispatch = useDispatch();
+  recognition.lang = "en-US";
 
   if (!browserSupportsSpeechRecognition) {
     return null;
   }
 
-  const listening = (event) => {
+  const togleListening = (event) => {
     event.preventDefault();
     setStatus(!status);
+    // console.log(status, "ini status togel");
     if (!status) {
       startListening();
     } else {
@@ -47,13 +51,37 @@ const Dictaphone = ({
   const reset = (event) => {
     event.preventDefault();
     resetTranscript();
+    setText("");
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(text, "ini text");
+    if (text) {
+      dispatch(setChatList({ user: { message: text } }));
+      dispatch(UserRequest(text));
+    } else {
+      dispatch(setChatList({ user: { message: finalTranscript } }));
+      dispatch(UserRequest(finalTranscript));
+    }
+  };
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    setText(event.target.value);
+  };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       {/* <span>{transcript}</span> */}
-      <form>
+      <form
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+        onSubmit={(event) => handleSubmit(event)}
+      >
         {/* <ToggleButton
           value="check"
           selected={selected}
@@ -65,41 +93,51 @@ const Dictaphone = ({
           <MicIcon />
         </ToggleButton>{" "} */}
         {/* <Tooltip title="Microphone"> */}
-        <IconButton
-          color="primary"
-          onClick={(event) => listening(event)}
-          aria-label="microphone"
-        >
-          <MicIcon />
-        </IconButton>
-        {/* </Tooltip> */}
-        <IconButton onClick={(event) => reset(event)} color="secondary">
-          <StopRoundedIcon />
-        </IconButton>
+        <div>
+          <IconButton
+            color="primary"
+            onClick={(event) => togleListening(event)}
+            width="100%"
+            aria-label="microphone"
+          >
+            <MicIcon />
+          </IconButton>
+          {/* </Tooltip> */}
+          <IconButton onClick={(event) => reset(event)} color="secondary">
+            <StopRoundedIcon />
+          </IconButton>
+        </div>
         {/* <button onClick={(event) => reset(event)}>Reset</button> */}
         <TextField
           id="filled-basic"
           placeholder="ketik pesan ..."
-          value={ finalTranscript ? finalTranscript : text}
-          style={{ width: "70vw" }}
+          value={finalTranscript ? finalTranscript : text}
+          style={{ width: "50vw" }}
           editable="true"
           multiline={true}
-          onChange={(event) => setText(event.target.value)}
+          onChange={(event) => handleChange(event)}
+          itemScope
         />
-        <IconButton color="primary">
+        <IconButton color="primary" type="submit">
           <SendSharpIcon />
         </IconButton>
       </form>
-      <Typography variant="subtitle1">
-        {interimTranscript}
-      </Typography>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="subtitle1">{interimTranscript}</Typography>
+      </div>
     </div>
   );
 };
 
 Dictaphone.propTypes = propTypes;
 const options = {
-  autoStart: false
+  autoStart: false,
 };
 
 export default SpeechRecognition(options)(Dictaphone);

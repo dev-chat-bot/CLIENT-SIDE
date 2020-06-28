@@ -1,29 +1,23 @@
-import React from "react";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import Paper from "@material-ui/core/Paper";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import IconButton from "@material-ui/core/IconButton";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import SpeechRecognition from "../Components/SpeechRecognition";
-import {
-  Paper,
-  ListItemText,
-  ListItemIcon,
-  IconButton,
-  Divider,
-  Typography,
-  CssBaseline,
-  List,
-  Toolbar,
-  AppBar,
-  Drawer,
-  ListItem,
-} from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsLogin } from "../store/action/index";
 
 const DummyData = [
@@ -45,21 +39,44 @@ const DummyData = [
     message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
   },
 ];
+const drawerWidth = 180;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  appBar: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
+    height: "100vh",
+    display: "flex",
+    // alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "column",
+  },
+}));
+
 
 export default function MainPage() {
   const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  // const user = useSelector((state) => state.user)
+  const messageChatList = useSelector((state) => state.messageChatList)
 
   const handleExitApp = (e) => {
     e.preventDefault();
@@ -68,60 +85,50 @@ export default function MainPage() {
     history.push("/");
   };
 
+  useEffect(() => {
+    
+  }, [messageChatList])
+
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="absolute"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Chating Room
-          </Typography>
-          <IconButton
-            color="inherit"
-            edge="end"
-            onClick={(event) => handleExitApp(event)}
-          >
-            <ExitToAppIcon />
-          </IconButton>
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+            <Typography variant="h6" noWrap>
+              Chating Room
+            </Typography>
+          </div>
+          <div>
+            <IconButton
+              color="inherit"
+              edge="end"
+              onClick={(event) => handleExitApp(event)}
+            >
+              <ExitToAppIcon />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
+        className={classes.drawer}
         variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
         classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
+          paper: classes.drawerPaper,
         }}
+        anchor="left"
       >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
+        <div
+          className={classes.toolbar}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div>
+            <Paper>USER</Paper>
+          </div>
         </div>
         <Divider />
         <List>
@@ -147,9 +154,19 @@ export default function MainPage() {
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ height: "70vh" }}>
+        <div
+          style={{
+            height: "90vh",
+            // alignItems: "flex-end",
+            display: "flex",
+            marginBottom: "5px",
+            flexDirection: "column-reverse",
+            border: "1px solid",
+            flexGrow: 1
+          }}
+        >
+          {/* <div className={classes.toolbar} /> */}
+          {/* <div style={{ alignSelf: "start" }}>
             {DummyData.map((el, i) => {
               return (
                 <div key={i}>
@@ -158,83 +175,25 @@ export default function MainPage() {
                 </div>
               );
             })}
+          </div> */}
+          <div style={{ alignSelf: "flex-end" }}>
+            {messageChatList.map((el, i) => {
+              return (
+                <div key={i}>
+                  {Object.keys(el)}
+                  <Paper>{el[Object.keys(el)]["message"]}</Paper>
+                </div>
+              );
+            })}
           </div>
-          <div>
-            <Paper>
-              <SpeechRecognition />
-            </Paper>
-          </div>
+        </div>
+        {/* <Divider style={{ border: "2px solid" }} /> */}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Paper style={{ width: "100%", borderRadius: "30px" }}>
+            <SpeechRecognition />
+          </Paper>
         </div>
       </main>
     </div>
   );
 }
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.background.primary,
-    height: "100vh",
-    display: "flex",
-    marginTop: 60,
-    // position: "static"
-  },
-}));
