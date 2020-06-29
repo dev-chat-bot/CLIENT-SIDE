@@ -1,24 +1,25 @@
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Paper from "@material-ui/core/Paper";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import IconButton from "@material-ui/core/IconButton";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import SpeechRecognition from "../Components/SpeechRecognition";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsLogin } from "../store/action/index";
+import React, { useEffect } from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import Drawer from "@material-ui/core/Drawer"
+import Paper from "@material-ui/core/Paper"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import List from "@material-ui/core/List"
+import Typography from "@material-ui/core/Typography"
+import Divider from "@material-ui/core/Divider"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import IconButton from "@material-ui/core/IconButton"
+import InboxIcon from "@material-ui/icons/MoveToInbox"
+import MailIcon from "@material-ui/icons/Mail"
+import SpeechRecognition from "../Components/SpeechRecognition"
+import ExitToAppIcon from "@material-ui/icons/ExitToApp"
+import { useHistory } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { setIsLogin } from "../store/action/index"
+import MessageBoard from "../Components/MessageBoard"
 
 const DummyData = [
   {
@@ -38,8 +39,8 @@ const DummyData = [
     name: "Kalys",
     message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
   },
-];
-const drawerWidth = 180;
+]
+const drawerWidth = 180
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,26 +69,31 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     flexDirection: "column",
   },
-}));
-
+}))
 
 export default function MainPage() {
-  const classes = useStyles();
-  const history = useHistory();
-  const dispatch = useDispatch();
+  const classes = useStyles()
+  const history = useHistory()
+  const dispatch = useDispatch()
   // const user = useSelector((state) => state.user)
   const messageChatList = useSelector((state) => state.messageChatList)
+  console.log(messageChatList)
 
   const handleExitApp = (e) => {
-    e.preventDefault();
-    localStorage.clear();
-    dispatch(setIsLogin(false));
-    history.push("/");
-  };
+    e.preventDefault()
+    localStorage.clear()
+    dispatch(setIsLogin(false))
+    history.push("/")
+  }
 
-  useEffect(() => {
-    
-  }, [messageChatList])
+  useEffect(() => {}, [messageChatList])
+
+  const code = `
+    function addNumber (a,b) {
+      return a + b
+    }
+  `
+  const language = "javascript"
 
   return (
     <div className={classes.root}>
@@ -162,7 +168,8 @@ export default function MainPage() {
             marginBottom: "5px",
             flexDirection: "column-reverse",
             border: "1px solid",
-            flexGrow: 1
+            flexGrow: 1,
+            overflow: "scroll",
           }}
         >
           {/* <div className={classes.toolbar} /> */}
@@ -176,16 +183,30 @@ export default function MainPage() {
               );
             })}
           </div> */}
-          <div style={{ alignSelf: "flex-end" }}>
+          {/* <div>
+            <CopyBlock
+              text={code}
+              language={language}
+              theme={github}
+              wrapLines
+            />
+          </div> */}
+          <div>
+            {messageChatList.map((element, index) => {
+              return <MessageBoard data={element} />
+            })}
+          </div>
+          {/* <div style={{ alignSelf: "flex-start" }}>
             {messageChatList.map((el, i) => {
               return (
                 <div key={i}>
                   {Object.keys(el)}
                   <Paper>{el[Object.keys(el)]["message"]}</Paper>
                 </div>
-              );
+              )
             })}
           </div>
+        </div> */}
         </div>
         {/* <Divider style={{ border: "2px solid" }} /> */}
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -195,5 +216,5 @@ export default function MainPage() {
         </div>
       </main>
     </div>
-  );
+  )
 }
