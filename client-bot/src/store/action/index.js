@@ -105,7 +105,7 @@ export const UserRequest = (text) => {
           token: localStorage.token,
         },
       })
-      console.log(getResponse.data.fulfillmentText, "ini hasil userRequest")
+      console.log(getResponse, "ini hasil userRequest")
       dispatch(setChatList({ adeps: { message: getResponse.data } }))
     } catch (error) {
       dispatch(setError(error.response.data.error))

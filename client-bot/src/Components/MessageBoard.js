@@ -2,6 +2,7 @@ import React from "react"
 import "./MessageBoard.css"
 import { CopyBlock } from "react-code-blocks"
 import github from "react-code-blocks/build/cjs/themes/github"
+import { Typography } from "@material-ui/core"
 
 const MessageBoard = (props) => {
   const propsData = props.data
@@ -21,7 +22,7 @@ const MessageBoard = (props) => {
       return (
         <div className="user-container">
           <div className="message-container">
-            <h4>{Object.keys(propsData)[0]}</h4>
+            <Typography>{Object.keys(propsData)[0]}</Typography>
             <p>{props.data.user.message}</p>
           </div>
         </div>
