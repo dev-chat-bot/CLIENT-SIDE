@@ -1,46 +1,50 @@
-import React, { useEffect } from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import Drawer from "@material-ui/core/Drawer"
-import Paper from "@material-ui/core/Paper"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import List from "@material-ui/core/List"
-import Typography from "@material-ui/core/Typography"
-import Divider from "@material-ui/core/Divider"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import ListItemText from "@material-ui/core/ListItemText"
-import IconButton from "@material-ui/core/IconButton"
-import InboxIcon from "@material-ui/icons/MoveToInbox"
-import MailIcon from "@material-ui/icons/Mail"
-import SpeechRecognition from "../Components/SpeechRecognition"
-import ExitToAppIcon from "@material-ui/icons/ExitToApp"
-import { useHistory } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { setIsLogin } from "../store/action/index"
-import MessageBoard from "../Components/MessageBoard"
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
+import Avatar from "@material-ui/core/Avatar";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import IconButton from "@material-ui/core/IconButton";
+// import InboxIcon from "@material-ui/icons/MoveToInbox";
+// import MailIcon from "@material-ui/icons/Mail";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsLogin } from "../store/action/index";
+import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone";
+import ChatIcon from '@material-ui/icons/Chat';
+// import { Link } from "react-router-dom";
+import ChatRoom from "../Components/ChatRoom"
+import AddCode from "../Components/AddCode"
 
-const DummyData = [
-  {
-    name: "YODI",
-    message: "Ku menangisss membayangakan",
-  },
-  {
-    name: "Fariss",
-    message:
-      "Betapa kejamnya dirimu atas diriku kau duakan cinta ini, kau pergi bersamanya ",
-  },
-  {
-    name: "Hafidz",
-    message: "Ku menangis melepaskan Kepergian dirimu dari sisi hidupku",
-  },
-  {
-    name: "Kalys",
-    message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
-  },
-]
-const drawerWidth = 180
+// const DummyData = [
+//   {
+//     name: "YODI",
+//     message: "Ku menangisss membayangakan",
+//   },
+//   {
+//     name: "Fariss",
+//     message:
+//       "Betapa kejamnya dirimu atas diriku kau duakan cinta ini, kau pergi bersamanya ",
+//   },
+//   {
+//     name: "Hafidz",
+//     message: "Ku menangis melepaskan Kepergian dirimu dari sisi hidupku",
+//   },
+//   {
+//     name: "Kalys",
+//     message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
+//   },
+// ];
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    backgroundColor: "#3f51b5"
+
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -63,37 +69,48 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
-    height: "100vh",
+    // height: "100vh",
     display: "flex",
     // alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "column",
   },
-}))
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+}));
 
 export default function MainPage() {
-  const classes = useStyles()
-  const history = useHistory()
-  const dispatch = useDispatch()
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
   // const user = useSelector((state) => state.user)
-  const messageChatList = useSelector((state) => state.messageChatList)
-  console.log(messageChatList, "ini list seluruh message")
+  const [main, setMain] = useState(false)
 
   const handleExitApp = (e) => {
-    e.preventDefault()
-    localStorage.clear()
-    dispatch(setIsLogin(false))
-    history.push("/")
+    e.preventDefault();
+    localStorage.clear();
+    dispatch(setIsLogin(false));
+    history.push("/");
+  };
+
+
+  // const code = `
+  //   function addNumber (a,b) {
+  //     return a + b
+  //   }
+  // `;
+  // const language = "javascript";
+
+  const movePageAdd = (event) => {
+    event.preventDefault()
+    setMain(true)
   }
-
-  useEffect(() => {}, [messageChatList])
-
-  const code = `
-    function addNumber (a,b) {
-      return a + b
-    }
-  `
-  const language = "javascript"
+  const movePageChat = (event) => {
+    event.preventDefault()
+    setMain(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -130,91 +147,50 @@ export default function MainPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            backgroundColor: "#3f51b5"
           }}
         >
-          <div>
+          {/* <div>
             <Paper>USER</Paper>
-          </div>
+          </div> */}
         </div>
         <Divider />
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <Paper style={{ height: "30%" }} elevation={3}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              height: "100%"
+            }}
+          >
+            <Avatar className={classes.large} src="public/logo192.png"></Avatar>
+            <Typography>NAMAKU</Typography>
+          </div>
+        </Paper>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
+          {/* <Link to="/add-Code"> */}
+            <ListItem button name="Add" onClick={(event) => movePageAdd(event)}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <AddCircleTwoToneIcon />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary="Add Code" />
             </ListItem>
-          ))}
+            <ListItem button onClick={(event) => movePageChat(event)}>
+              <ListItemIcon>
+                <ChatIcon />
+              </ListItemIcon>
+              <ListItemText primary="Chat Room" />
+            </ListItem>
+          {/* </Link> */}
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div
-          style={{
-            height: "90vh",
-            // alignItems: "flex-end",
-            display: "flex",
-            marginBottom: "5px",
-            flexDirection: "column-reverse",
-            border: "1px solid",
-            flexGrow: 1,
-            overflow: "scroll",
-          }}
-        >
-          {/* <div className={classes.toolbar} /> */}
-          {/* <div style={{ alignSelf: "start" }}>
-            {DummyData.map((el, i) => {
-              return (
-                <div key={i}>
-                  {el.name}
-                  <Paper>{el.message}</Paper>
-                </div>
-              );
-            })}
-          </div> */}
-          {/* <div>
-            <CopyBlock
-              text={code}
-              language={language}
-              theme={github}
-              wrapLines
-            />
-          </div> */}
-          <div>
-            {messageChatList.map((element, index) => {
-              return <MessageBoard data={element} key={index} />
-            })}
-          </div>
-          {/* <div style={{ alignSelf: "flex-start" }}>
-            {messageChatList.map((el, i) => {
-              return (
-                <div key={i}>
-                  {Object.keys(el)}
-                  <Paper>{el[Object.keys(el)]["message"]}</Paper>
-                </div>
-              )
-            })}
-          </div>
-        </div> */}
-        </div>
-        {/* <Divider style={{ border: "2px solid" }} /> */}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Paper style={{ width: "100%", borderRadius: "30px" }}>
-            <SpeechRecognition />
-          </Paper>
-        </div>
+
+       {main ? <AddCode /> : <ChatRoom />} 
       </main>
     </div>
-  )
+  );
 }

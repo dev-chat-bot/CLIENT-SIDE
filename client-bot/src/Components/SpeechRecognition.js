@@ -85,9 +85,11 @@ const Dictaphone = ({
     if (text) {
       dispatch(setChatList({ user: { message: text } }));
       dispatch(UserRequest(text));
+      setText("");
     } else {
       dispatch(setChatList({ user: { message: finalTranscript } }));
       dispatch(UserRequest(finalTranscript));
+      setText("");
     }
   };
 
