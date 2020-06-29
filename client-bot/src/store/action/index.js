@@ -10,6 +10,7 @@ export const SET_USER = "SET_USER"
 export const SET_ERROR = "SET_ERROR"
 export const SET_ISLOGIN = "SET_ISLOGIN"
 export const SET_CHATLIST = "SET_CHATLIST"
+export const SET_ADD_SNIPPET = "SET_ADD_SNIPPET"
 
 export const setUser = (data) => {
   return { type: SET_USER, payload: data }
@@ -35,6 +36,9 @@ export const setIsLogin = (data) => {
 }
 export const setChatList = (data) => {
   return { type: SET_CHATLIST, payload: data }
+}
+export const setAddSnippet = (data) => {
+  return { type: SET_ADD_SNIPPET, payload: data }
 }
 
 export const SignUp = (data) => {
@@ -112,6 +116,7 @@ export const UserRequest = (text) => {
         dispatch(setChatList({ adeps: { message: getResponse.data } }))
       }
     } catch (error) {
+      //console.log(error.response)
       dispatch(setError(error.response.data.error))
       setTimeout(() => {
         dispatch(setError(""))
@@ -139,5 +144,12 @@ export const LoginFacebook = (email) => {
         dispatch(setError(""))
       }, 5000)
     }
+  }
+}
+
+export const AddSnippet = (data) => {
+  return (dispatch) => {
+    // let newSnippet = 
+    console.log(data, 'ini data addSnippet')
   }
 }

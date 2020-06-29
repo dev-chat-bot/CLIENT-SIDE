@@ -6,7 +6,8 @@ import {
   SET_PASSWORD,
   SET_EMAIL,
   SET_USERNAME,
-  SET_CHATLIST
+  SET_CHATLIST,
+  SET_ADD_SNIPPET
 } from "../action/index";
 
 const initialState = {
@@ -17,7 +18,7 @@ const initialState = {
   password: "",
   email: "",
   username: "",
-  messageChatList: []
+  messageChatList: [],
 };
 
 function reducer(state = initialState, action) {

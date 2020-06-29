@@ -6,6 +6,7 @@ import { Typography } from "@material-ui/core"
 
 const MessageBoard = (props) => {
   const propsData = props.data
+  //console.log(propsData)
   if (propsData) {
     if (Object.keys(propsData)[0] === "adeps") {
       if (typeof propsData.adeps.message === "string") {

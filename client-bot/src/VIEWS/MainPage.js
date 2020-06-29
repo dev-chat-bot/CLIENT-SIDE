@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import Paper from "@material-ui/core/Paper";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
@@ -15,14 +15,15 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 // import InboxIcon from "@material-ui/icons/MoveToInbox";
 // import MailIcon from "@material-ui/icons/Mail";
-import SpeechRecognition from "../Components/SpeechRecognition";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsLogin } from "../store/action/index";
-import MessageBoard from "../Components/MessageBoard";
 import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone";
-import { Link } from "react-router-dom";
+import ChatIcon from '@material-ui/icons/Chat';
+// import { Link } from "react-router-dom";
+import ChatRoom from "../Components/ChatRoom"
+import AddCode from "../Components/AddCode"
 
 // const DummyData = [
 //   {
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: "red"
+    backgroundColor: "#3f51b5"
 
   },
   // necessary for content to be below app bar
@@ -85,8 +86,7 @@ export default function MainPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   // const user = useSelector((state) => state.user)
-  const messageChatList = useSelector((state) => state.messageChatList)
-  console.log(messageChatList, "ini list seluruh message")
+  const [main, setMain] = useState(false)
 
   const handleExitApp = (e) => {
     e.preventDefault();
@@ -95,7 +95,6 @@ export default function MainPage() {
     history.push("/");
   };
 
-  useEffect(() => {}, [messageChatList]);
 
   // const code = `
   //   function addNumber (a,b) {
@@ -103,6 +102,15 @@ export default function MainPage() {
   //   }
   // `;
   // const language = "javascript";
+
+  const movePageAdd = (event) => {
+    event.preventDefault()
+    setMain(true)
+  }
+  const movePageChat = (event) => {
+    event.preventDefault()
+    setMain(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -163,60 +171,25 @@ export default function MainPage() {
         </Paper>
         <Divider />
         <List>
-          <Link to="/add-Code">
-            <ListItem button>
+          {/* <Link to="/add-Code"> */}
+            <ListItem button name="Add" onClick={(event) => movePageAdd(event)}>
               <ListItemIcon>
                 <AddCircleTwoToneIcon />
               </ListItemIcon>
               <ListItemText primary="Add Code" />
             </ListItem>
-          </Link>
+            <ListItem button onClick={(event) => movePageChat(event)}>
+              <ListItemIcon>
+                <ChatIcon />
+              </ListItemIcon>
+              <ListItemText primary="Chat Room" />
+            </ListItem>
+          {/* </Link> */}
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div
-          style={{
-            height: "90vh",
-            // alignItems: "flex-end",
-            display: "flex",
-            marginBottom: "5px",
-            flexDirection: "column-reverse",
-            border: "1px solid",
-            flexGrow: 1,
-            overflow: "scroll",
-          }}
-        >
-          {/* <div>
-            <CopyBlock
-              text={code}
-              language={language}
-              theme={github}
-              wrapLines
-            />
-          </div> */}
-          <div>
-            {messageChatList.map((element, index) => {
-              return <MessageBoard data={element} key={index} />;
-            })}
-          </div>
-          {/* <div style={{ alignSelf: "flex-start" }}>
-            {messageChatList.map((el, i) => {
-              return (
-                <div key={i}>
-                  {Object.keys(el)}
-                  <Paper>{el[Object.keys(el)]["message"]}</Paper>
-                </div>
-              )
-            })}
-          </div>
-        </div> */}
-        </div>
-        {/* <Divider style={{ border: "2px solid" }} /> */}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Paper style={{ width: "100%", borderRadius: "30px" }}>
-            <SpeechRecognition />
-          </Paper>
-        </div>
+
+       {main ? <AddCode /> : <ChatRoom />} 
       </main>
     </div>
   );

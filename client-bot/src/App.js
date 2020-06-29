@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import FirstPage from "./VIEWS/firstPage";
 import MainPage from "./VIEWS/MainPage";
-import AddCode from "./VIEWS/AddCode"
+// import AddCode from "./Components/AddCode"
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
       }} */}
     {/* > */}
       <Switch>
-        <Route component={AddCode} path="/add-code" />
+        {/* <Route component={AddCode} path="/add-code" /> */}
         <Route component={MainPage} path="/main" />
         <Route component={FirstPage} path="/" />
       </Switch>
