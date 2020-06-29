@@ -193,7 +193,7 @@ export default function MainPage() {
           </div> */}
           <div>
             {messageChatList.map((element, index) => {
-              return <MessageBoard data={element} />
+              return <MessageBoard data={element} key={index} />
             })}
           </div>
           {/* <div style={{ alignSelf: "flex-start" }}>
