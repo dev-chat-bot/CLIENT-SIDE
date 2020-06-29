@@ -92,7 +92,6 @@ export const SignIn = (data) => {
 }
 
 export const UserRequest = (text) => {
-  console.log(text, "ini text")
   return async (dispatch) => {
     try {
       let getResponse = await axios({
@@ -105,8 +104,13 @@ export const UserRequest = (text) => {
           token: localStorage.token,
         },
       })
-      console.log(getResponse.data.fulfillmentText, "ini hasil userRequest")
-      dispatch(setChatList({ adeps: { message: getResponse.data } }))
+      if (typeof getResponse.data === "object") {
+        getResponse.data.forEach((element) => {
+          dispatch(setChatList({ adeps: { message: element } }))
+        })
+      } else {
+        dispatch(setChatList({ adeps: { message: getResponse.data } }))
+      }
     } catch (error) {
       dispatch(setError(error.response.data.error))
       setTimeout(() => {
