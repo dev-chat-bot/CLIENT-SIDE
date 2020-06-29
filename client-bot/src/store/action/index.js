@@ -112,6 +112,7 @@ export const UserRequest = (text) => {
         dispatch(setChatList({ adeps: { message: getResponse.data } }))
       }
     } catch (error) {
+      //console.log(error.response)
       dispatch(setError(error.response.data.error))
       setTimeout(() => {
         dispatch(setError(""))

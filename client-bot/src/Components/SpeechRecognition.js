@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import SpeechRecognition from "react-speech-recognition";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,16 +11,16 @@ import { UserRequest, setChatList } from "../store/action/index";
 
 const propTypes = {
   // Props injected by SpeechRecognition
-  transcript: PropTypes.string,
   resetTranscript: PropTypes.func,
   browserSupportsSpeechRecognition: PropTypes.bool,
   recognition: PropTypes.object,
   interimTranscript: PropTypes.string,
   finalTranscript: PropTypes.string,
+  abortListening: PropTypes.func
 };
 
 const Dictaphone = ({
-  transcript,
+  abortListening,
   resetTranscript,
   startListening,
   stopListening,
@@ -29,19 +29,43 @@ const Dictaphone = ({
   finalTranscript,
   browserSupportsSpeechRecognition,
 }) => {
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   recognition.lang = "en-US";
 
-  if (!browserSupportsSpeechRecognition) {
-    return null;
+
+  const handleListening = async () => {
+    const command = finalTranscript.split(' ')
+    await command.map(async (el, i) => {
+      if(el === 'stop' || el === 'Stop' || el === 'STOP') {
+        if (command[i+1] === 'listen' || command[i+1] === 'listening') {
+          dispatch(setChatList({ user: { message: finalTranscript } }));
+          setTimeout(() => {
+            dispatch(setChatList({ adeps: { message: 'As your command sir!!' } }));
+          },800)
+          resetTranscript()
+          await abortListening()
+          finalTranscript = ''
+        }
+      }
+      if(el === 'reset' || el === 'Reset' || el === 'RESET'){
+        finalTranscript=''
+        resetTranscript()
+      }
+      return null
+    })
+    if(finalTranscript !== '') {
+      await setTimeout(()=> {
+        dispatch(setChatList({ user: { message: finalTranscript } }));
+        dispatch(UserRequest(finalTranscript));
+        resetTranscript();
+      }, 2000)
+    }
   }
 
-  const togleListening = (event) => {
-    event.preventDefault();
+  const togleListening = () => {
     setStatus(!status);
-    // console.log(status, "ini status togel");
     if (!status) {
       startListening();
     } else {
@@ -50,6 +74,7 @@ const Dictaphone = ({
   };
   const reset = (event) => {
     event.preventDefault();
+    finalTranscript = ''
     resetTranscript();
     setText("");
   };
@@ -70,6 +95,14 @@ const Dictaphone = ({
     event.preventDefault();
     setText(event.target.value);
   };
+
+  useEffect(() => {
+    handleListening()
+  }, [finalTranscript])
+
+  if (!browserSupportsSpeechRecognition) {
+    return null;
+  }
 
   return (
     <div style={{ width: "100%" }}>
@@ -137,7 +170,7 @@ const Dictaphone = ({
 
 Dictaphone.propTypes = propTypes;
 const options = {
-  autoStart: false,
+  autoStart: true,
 };
 
 export default SpeechRecognition(options)(Dictaphone);
