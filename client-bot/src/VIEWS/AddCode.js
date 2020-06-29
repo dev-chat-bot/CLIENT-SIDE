@@ -2,6 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import CKEditor from "ckeditor4-react";
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+hljs.registerLanguage('javascript', javascript);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +28,11 @@ export default function AddCode() {
 
   return (
     <form className={classes.root} noValidate>
-      <CKEditor type="classic" data="<p>Some initial data</p>" />
+      <pre>
+        <code className="html">
+          <CKEditor type="classic" data="<p>Some initial data</p>" />
+        </code>
+      </pre>
       {/* <div> */}
       <TextField
         id="filled-multiline-flexible"

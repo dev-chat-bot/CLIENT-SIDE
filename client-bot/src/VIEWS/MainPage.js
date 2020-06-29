@@ -85,8 +85,8 @@ export default function MainPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   // const user = useSelector((state) => state.user)
-  const messageChatList = useSelector((state) => state.messageChatList);
-  console.log(messageChatList);
+  const messageChatList = useSelector((state) => state.messageChatList)
+  console.log(messageChatList, "ini list seluruh message")
 
   const handleExitApp = (e) => {
     e.preventDefault();
