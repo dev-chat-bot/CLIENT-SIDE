@@ -27,13 +27,8 @@
 }
 
 .code-block {
-  height: 30px;
-  width: 450px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 10px;
-  margin-bottom: 10px;
+  align-items: center;
   margin-left: 10px;
-  padding: 0px 10px 0px 10px;
 }
 
 .message-container {
@@ -50,10 +45,44 @@
   padding: 0px 10px 0px 10px;
   align-items: center;
   display: flex;
+  background-color: white;
+}
+
+.message-bot {
+  height: 30px;
+  width: 400px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 0px 10px 0px 10px;
+  background-color: white;
+  /* align-items: center;
+  display: flex; */
+}
+.message-bot-1 {
+  height: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 0px 10px 0px 10px;
+  background-color: white;
+  /* align-items: center;
+  display: flex; */
 }
 
 .user-name {
   position: relative;
   right: -10px;
   margin-right: 10px;
+  color: mintcream;
+}
+.bot-name {
+  position: relative;
+  right: -10px;
+  margin-right: 10px;
+  color: greenyellow;
+}
+
+.user-name {
+  font-weight: bold !important;
 }

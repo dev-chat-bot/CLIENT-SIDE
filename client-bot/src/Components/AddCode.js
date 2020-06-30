@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
-import { Tooltip, Typography } from "@material-ui/core";
+import { Tooltip, Typography, Grid } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SaveIcon from "@material-ui/icons/Save";
 import { useDispatch } from "react-redux";
@@ -14,10 +14,11 @@ import { AddSnippet } from "../store/action/index";
 
 export default function AddCode() {
   const [snippet, setSnippet] = React.useState("");
-  const [Test, setTest] = React.useState("");
+  // const [Test, setTest] = React.useState("")
   const [keyword, setKeyword] = React.useState("");
   const [command, setCommand] = React.useState("");
   const [response, setResponse] = React.useState("");
+  const [guide, setGuide] = React.useState("");
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
@@ -55,10 +56,10 @@ export default function AddCode() {
       trainingPhrasesParts = [command];
     }
     if (response.indexOf(",") !== -1 || command.indexOf(",") !== -1) {
-      if (response.indexOf(",") !== -1 && command.indexOf(',') === -1) {
+      if (response.indexOf(",") !== -1 && command.indexOf(",") === -1) {
         trainingPhrasesParts = [command];
       }
-      if (command.indexOf(",") !== -1 && response.indexOf(",") === -1 ) {
+      if (command.indexOf(",") !== -1 && response.indexOf(",") === -1) {
         messageTexts = [response];
       }
     }
@@ -66,15 +67,20 @@ export default function AddCode() {
       displayName: keyword,
       messageTexts,
       trainingPhrasesParts,
-      snippet
+      snippet,
+      guide,
     };
-
+    console.log("ini payload", payload);
     dispatch(AddSnippet(payload));
   };
 
   const handleSnippet = (value) => {
     setSnippet(value);
-    console.log(snippet)
+  };
+
+  const handleGuide = (event) => {
+    setGuide(event.target.value);
+    console.log(guide);
   };
 
   const handleChange = (event) => {
@@ -97,83 +103,115 @@ export default function AddCode() {
   return (
     <div
       style={{
-        marginTop: "7vh",
-        alignItems: "center",
-        justifyContent: "center",
         display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        paddingTop: "50px"
       }}
     >
-      <AceEditor
-        placeholder="Placeholder Text"
-        mode="javascript"
-        theme="monokai"
-        onChange={(value) => handleSnippet(value)}
-        value={snippet}
-        name="snippet"
-        fontSize={14}
-        showPrintMargin={true}
-        showGutter={true}
-        highlightActiveLine={true}
-        setOptions={{
-          showLineNumbers: true,
-          tabSize: 2,
-          useWorker: false,
-        }}
-      />
-      <div
+      {/* <div
         style={{
+          marginTop: "7vh",
+          alignItems: "center",
+          justifyContent: "center",
           display: "flex",
-          justifyContent: "start",
-          flexDirection: "column",
         }}
-      >
-        <div>
-          <Typography>keyword</Typography>
-          <TextField
-            id="filled-keyword"
-            label="Keywords"
-            variant="filled"
-            value={keyword}
-            name="keyword"
-            onChange={(event) => handleChange(event)}
+      > */}
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <AceEditor
+            placeholder="Placeholder Text"
+            mode="javascript"
+            theme="monokai"
+            onChange={(value) => handleSnippet(value)}
+            value={snippet}
+            name="snippet"
+            fontSize={14}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            setOptions={{
+              showLineNumbers: true,
+              tabSize: 2,
+              useWorker: false,
+            }}
           />
-        </div>
-        <div>
-          <Typography>set command</Typography>
-          <Tooltip title="if you have more than one command please seperate them by ( , )">
-            <TextField
-              id="filled-command"
-              label="Set Command"
-              variant="filled"
-              value={command}
-              name="command"
-              onChange={(event) => handleChange(event)}
-            />
-          </Tooltip>
-        </div>
-        <div>
-          <Typography>Set Response Hades</Typography>
-          <Tooltip title="if you have more than one response please seperate them by ( , )">
-            <TextField
-              id="filled-Response"
-              label="Response hades"
-              variant="filled"
-              value={response}
-              name="response"
-              onChange={(event) => handleChange(event)}
-            />
-          </Tooltip>
-        </div>
-        <div style={{ justifyContent: "end" }}>
-          <IconButton
-            onClick={(event) => handleSubmit(event)}
-            color="secondary"
-            type="submit"
+        </Grid>
+        <Grid item xs={6}>
+          <div
+          // style={{
+          //   margin: "auto",
+          //   marginTop: "40px",
+          // }}
           >
-            <SaveIcon />
-          </IconButton>
+            <h4>Add Guideline</h4>
+            <textarea onChange={handleGuide} rows="10" cols="50" />
+          </div>
+        </Grid>
+        <Grid item xs={3}>
+          <div>
+            <Typography>keyword</Typography>
+            <TextField
+              id="filled-keyword"
+              label="Keywords"
+              variant="filled"
+              value={keyword}
+              name="keyword"
+              onChange={(event) => handleChange(event)}
+            />
+          </div>
+        </Grid>
+        <Grid item xs={3}>
+          <div>
+            <Typography>set command</Typography>
+            <Tooltip title="if you have more than one command please seperate them by ( , )">
+              <TextField
+                id="filled-command"
+                label="Set Command"
+                variant="filled"
+                value={command}
+                name="command"
+                onChange={(event) => handleChange(event)}
+              />
+            </Tooltip>
+          </div>
+        </Grid>
+        <Grid item xs={3}>
+          <div>
+            <Typography>Set Response Hades</Typography>
+            <Tooltip title="if you have more than one response please seperate them by ( , )">
+              <TextField
+                id="filled-Response"
+                label="Response hades"
+                variant="filled"
+                value={response}
+                name="response"
+                onChange={(event) => handleChange(event)}
+              />
+            </Tooltip>
+          </div>
+        </Grid>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "start",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ justifyContent: "end" }}>
+            <IconButton
+              onClick={(event) => handleSubmit(event)}
+              color="secondary"
+              type="submit"
+            >
+              Save
+              <SaveIcon />
+            </IconButton>
+          </div>
         </div>
-      </div>
+      </Grid>
+      {/* </div> */}
     </div>
   );
 }

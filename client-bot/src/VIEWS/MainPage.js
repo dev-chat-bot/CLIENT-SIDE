@@ -72,11 +72,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
-    // height: "100vh",
     display: "flex",
-    // alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "column",
+    backgroundColor: "#7289da",
+    color: "#1e2124"
   },
   large: {
     width: theme.spacing(7),

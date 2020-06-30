@@ -14,12 +14,17 @@ const MessageBoard = (props) => {
         return (
           <div className="bot-container">
             <div className="code-block">
-              <CopyBlock
-                text={propsData.adeps.message}
-                language="javascript"
-                theme={github}
-                wrapLines
-              />
+              <div className="bot-name">
+                <Typography>{Object.keys(propsData)[0]}</Typography>
+              </div>
+              <div className="message-bot">
+                <CopyBlock
+                  text={propsData.adeps.message}
+                  language="javascript"
+                  theme={github}
+                  wrapLines
+                />
+              </div>
             </div>
           </div>
         );
@@ -28,20 +33,28 @@ const MessageBoard = (props) => {
           return (
             <div className="bot-container">
               <div className="code-block">
+                {/* <div className="message-bot"> */}
                 <CopyBlock
                   text={propsData.adeps.message.content}
                   language="javascript"
                   theme={github}
                   wrapLines
                 />
+                {/* </div> */}
               </div>
             </div>
           );
         } else {
           return (
-            <div className="message-container">
-              <h4>{Object.keys(propsData)[0]}</h4>
-              <p>{props.data.adeps.message.content}</p>
+            <div className="bot-container">
+              <div className="code-block">
+                <div className="bot-name">
+                  <Typography>{Object.keys(propsData)[0]}</Typography>
+                </div>
+                <div className="message-bot-1">
+                  <Typography paragraph>{props.data.adeps.message.content}</Typography>
+                </div>
+              </div>
             </div>
           );
         }
@@ -50,10 +63,10 @@ const MessageBoard = (props) => {
       return (
         <>
           <div className="user-container">
-            <div className="message-container">
+            <div className="code-block">
               <div className="user-name">
                 {/* <Typography>{Object.keys(propsData)[0]}</Typography> */}
-                <Typography>Valorant kuy</Typography>
+                <Typography>Test Nama User Panjang</Typography>
               </div>
               <div className="message-user">
                 <p>{props.data.user.message}</p>

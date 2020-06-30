@@ -18,7 +18,7 @@ export default function ChatRoom() {
           display: "flex",
           marginBottom: "5px",
           flexDirection: "column-reverse",
-          border: "1px solid",
+          border: "1px solid transparent",
           flexGrow: 1,
           overflow: "scroll",
         }}
