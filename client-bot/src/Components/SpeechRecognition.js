@@ -6,8 +6,9 @@ import MicIcon from "@material-ui/icons/Mic";
 import { TextField, Typography } from "@material-ui/core";
 import SendSharpIcon from "@material-ui/icons/SendSharp";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserRequest, setChatList } from "../store/action/index";
+import { setIsLogin, setToken } from "../store/action/index";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -16,7 +17,7 @@ const propTypes = {
   recognition: PropTypes.object,
   interimTranscript: PropTypes.string,
   finalTranscript: PropTypes.string,
-  abortListening: PropTypes.func
+  abortListening: PropTypes.func,
 };
 
 const Dictaphone = ({
@@ -32,41 +33,58 @@ const Dictaphone = ({
   const [status, setStatus] = useState(true);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.isLogin);
+  const user =
+    useSelector((state) => state.user) || sessionStorage.getItem("username");
+
   recognition.lang = "en-US";
 
+  const obj = {};
 
   const handleListening = async () => {
-    const command = finalTranscript.split(' ')
+    const command = finalTranscript.split(" ");
     await command.map(async (el, i) => {
-      if(el === 'stop' || el === 'Stop' || el === 'STOP') {
-        if (command[i+1] === 'listen' || command[i+1] === 'listening') {
-          dispatch(setChatList({ user: { message: finalTranscript } }));
+      if (el === "stop" || el === "Stop" || el === "STOP") {
+        if (command[i + 1] === "listen" || command[i + 1] === "listening") {
+          obj[user] = { message: finalTranscript };
+          dispatch(setChatList(obj));
           setTimeout(() => {
-            dispatch(setChatList({ adeps: { message: 'As your command sir!!' } }));
-          },800)
-          resetTranscript()
-          await abortListening()
-          finalTranscript = ''
+            dispatch(
+              setChatList({ Hinata: { message: "As your command sir!!" } })
+            );
+          }, 800);
+          resetTranscript();
+          await abortListening();
+          finalTranscript = "";
+          setStatus(false);
         }
       }
-      if(el === 'reset' || el === 'Reset' || el === 'RESET'){
-        finalTranscript=''
-        resetTranscript()
+      if (el === "reset" || el === "Reset" || el === "RESET") {
+        finalTranscript = "";
+        resetTranscript();
       }
-      return null
-    })
-    if(finalTranscript !== '') {
-      await setTimeout(()=> {
-        dispatch(setChatList({ user: { message: finalTranscript } }));
+      return null;
+    });
+    if (finalTranscript !== "") {
+      await setTimeout(() => {
+        obj[user] = { message: finalTranscript };
+        dispatch(setChatList(obj));
         dispatch(UserRequest(finalTranscript));
         resetTranscript();
-      }, 2000)
+      }, 2000);
     }
-  }
+  };
 
   useEffect(() => {
+    if (localStorage.token) {
+      dispatch(setIsLogin(true));
+      dispatch(setToken(localStorage.token));
+    }
     startListening();
-  },[])
+    if (!localStorage.token) {
+      abortListening();
+    }
+  }, [isLogin]);
 
   const togleListening = () => {
     setStatus(!status);
@@ -78,20 +96,21 @@ const Dictaphone = ({
   };
   const reset = (event) => {
     event.preventDefault();
-    finalTranscript = ''
+    finalTranscript = "";
     resetTranscript();
     setText("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(text, "ini text");
     if (text) {
-      dispatch(setChatList({ user: { message: text } }));
+      obj[user] = { message: text };
+      dispatch(setChatList(obj));
       dispatch(UserRequest(text));
       setText("");
     } else {
-      dispatch(setChatList({ user: { message: finalTranscript } }));
+      obj[user] = { message: text };
+      dispatch(setChatList(obj));
       dispatch(UserRequest(finalTranscript));
       setText("");
     }
@@ -103,8 +122,8 @@ const Dictaphone = ({
   };
 
   useEffect(() => {
-    handleListening()
-  }, [finalTranscript])
+    handleListening();
+  }, [finalTranscript]);
 
   if (!browserSupportsSpeechRecognition) {
     return null;
@@ -144,12 +163,13 @@ const Dictaphone = ({
           {/* </Tooltip> */}
           <IconButton onClick={(event) => reset(event)} color="secondary">
             <StopRoundedIcon />
+            <Typography>Reset</Typography>
           </IconButton>
         </div>
         {/* <button onClick={(event) => reset(event)}>Reset</button> */}
         <TextField
           id="filled-basic"
-          placeholder="ketik pesan ..."
+          placeholder="Message ..."
           value={finalTranscript ? finalTranscript : text}
           style={{ width: "50vw" }}
           editable="true"

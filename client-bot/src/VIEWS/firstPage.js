@@ -25,13 +25,15 @@ import { useHistory } from "react-router-dom";
 import { setUsername, setPassword, LoginFacebook } from "../store/action/index";
 // import FacebookLoginButton from "../Components/FacebookLoginButton";
 import GoogleLogin from "react-google-login";
+import { setIsLogin, setToken } from "../store/action/index";
+
 
 function Copyright() {
   return (
     <Typography variant="body2" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        ADEPs
+        Hinata
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -51,8 +53,12 @@ export default function FirstPage() {
   const modalRef = React.useRef();
 
   useEffect(() => {
-    if (isLogin || localStorage.token) history.push("/main");
-  }, [isLogin, history]);
+    if (localStorage.token) {
+      dispatch(setIsLogin(true));
+      dispatch(setToken(localStorage.token))
+    }
+    if (localStorage.token) history.push("/main");
+  }, [isLogin]);
 
   const resetError = () => {
     setTimeout(() => {
