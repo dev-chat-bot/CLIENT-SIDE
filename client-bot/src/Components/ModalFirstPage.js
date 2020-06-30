@@ -14,7 +14,6 @@ import {
 } from "../store/action/index";
 
 const ModalFirstPage = forwardRef((props, ref) => {
-  // console.log(props, "ini pros");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const email = useSelector((state) => state.email);
@@ -41,8 +40,6 @@ const ModalFirstPage = forwardRef((props, ref) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    // console.log(event.target)
-    // console.log(name, value)
     switch (name) {
       case "email":
         dispatch(setEmail(value));

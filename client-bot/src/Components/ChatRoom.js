@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 
 export default function ChatRoom() {
   const messageChatList = useSelector((state) => state.messageChatList);
-  console.log(messageChatList, "ini list seluruh message");
 
   useEffect(() => {}, [messageChatList]);
 

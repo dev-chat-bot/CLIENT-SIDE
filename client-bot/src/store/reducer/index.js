@@ -7,18 +7,21 @@ import {
   SET_EMAIL,
   SET_USERNAME,
   SET_CHATLIST,
-  SET_ADD_SNIPPET
+  SET_VIDEO_ID,
+  SET_TOKEN,
 } from "../action/index";
 
 const initialState = {
-  user: {},
+  user: "",
   error: "",
   isLogin: false,
   confirmPassword: "",
   password: "",
   email: "",
   username: "",
+  token: "",
   messageChatList: [],
+  videoId: "",
 };
 
 function reducer(state = initialState, action) {
@@ -40,8 +43,12 @@ function reducer(state = initialState, action) {
     case SET_CONFIRMPASSWORD:
       return { ...state, confirmPassword: payload };
     case SET_CHATLIST:
-      const data = state.messageChatList
+      const data = state.messageChatList;
       return { ...state, messageChatList: data.concat(payload) };
+    case SET_TOKEN:
+      return { ...state, token: payload };
+    case SET_VIDEO_ID:
+      return { ...state, videoId: payload };
     default:
       return { ...state };
   }

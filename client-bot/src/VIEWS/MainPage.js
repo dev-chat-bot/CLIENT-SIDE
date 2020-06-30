@@ -18,12 +18,14 @@ import IconButton from "@material-ui/core/IconButton";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsLogin } from "../store/action/index";
+import { setIsLogin, setToken } from "../store/action/index";
 import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone";
 import ChatIcon from "@material-ui/icons/Chat";
 // import { Link } from "react-router-dom";
 import ChatRoom from "../Components/ChatRoom";
 import AddCode from "../Components/AddCode";
+import Background from '../image/background.png'
+
 
 // const DummyData = [
 //   {
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    backgroundColor: "#424549",
+    backgroundColor: "#282b30",
   },
   drawer: {
     width: drawerWidth,
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    backgroundColor: "#424549",
+    backgroundColor: "#282b30",
     color: "#fff",
     display: "flex",
     justifyContent: "space-around",
@@ -76,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     backgroundColor: "#282b30",
     color: "#1e2124",
+    backgroundImage: `url(${Background})`
   },
   large: {
     width: theme.spacing(7),
@@ -86,36 +89,44 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     color: "#fff",
     backgroundSize: "200%",
-    transition: '0.4s', 
-    '&:hover': {
-      backgroundPosition: 'right'
-    }
+    transition: "0.7s",
+    "&:hover": {
+      backgroundPosition: "right",
+    },
   },
   btn1: {
-    backgroundImage: 'linear-gradient(45deg, #36393e , #424549, #7289da)'
-  }
+    backgroundImage: "linear-gradient(100deg, #282b30 , #36393e, #7289da)",
+  },
+  btn2: {
+    backgroundImage: "linear-gradient(60deg, #282b30 , #36393e, #b91400)",
+  },
+  cardColor: {
+    backgroundImage: "linear-gradient(45deg, #36393e , #7289da, #ffd95a)",
+  },
+
 }));
 
 export default function MainPage() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user)
+  const user =
+    useSelector((state) => state.user) || sessionStorage.getItem("username");
   const [main, setMain] = useState(false);
+  const isLogin = useSelector((state) => state.isLogin);
 
   const handleExitApp = (e) => {
-    e.preventDefault();
     localStorage.clear();
     dispatch(setIsLogin(false));
-    history.push("/");
   };
 
-  // const code = `
-  //   function addNumber (a,b) {
-  //     return a + b
-  //   }
-  // `;
-  // const language = "javascript";
+  useEffect(() => {
+    if (localStorage.token) {
+      dispatch(setIsLogin(true));
+      dispatch(setToken(localStorage.token));
+    }
+    if (!localStorage.token) history.push("/");
+  }, [isLogin]);
 
   const movePageAdd = (event) => {
     event.preventDefault();
@@ -141,6 +152,7 @@ export default function MainPage() {
               color="inherit"
               edge="end"
               onClick={(event) => handleExitApp(event)}
+              className={`${classes.btn} ${classes.btn2}`}
             >
               <ExitToAppIcon />
             </IconButton>
@@ -159,37 +171,48 @@ export default function MainPage() {
           <Paper
             style={{ height: "120px", width: "68%", marginLeft: "40px" }}
             elevation={3}
+            className={`${classes.btn} ${classes.cardColor}`}
           >
             <div
               style={{
-                display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                display: "flex",
                 flexDirection: "column",
                 height: "100%",
               }}
             >
-              <Avatar
-                className={classes.large}
-                src="public/logo192.png"
-              ></Avatar>
-              <Typography>NAMAKU</Typography>
+              <Avatar className={classes.large} src="https://picsum.photos/200/300?random=2"></Avatar>
+              <div>
+                <Typography>{user}</Typography>
+              </div>
             </div>
           </Paper>
         </div>
         <Divider />
-        <div style={{ display: "flex", alignItems: "flex-start", height: "50%" }}>
+        <div
+          style={{ display: "flex", alignItems: "flex-start", height: "50%" }}
+        >
           <List style={{ width: "100%" }}>
             {/* <Link to="/add-Code"> */}
-            <ListItem button name="Add" onClick={(event) => movePageAdd(event)} className={ `${classes.btn} ${classes.btn1}` }>
+            <ListItem
+              button
+              name="Add"
+              onClick={(event) => movePageAdd(event)}
+              className={`${classes.btn} ${classes.btn1}`}
+            >
               <IconButton>
-                <AddCircleTwoToneIcon style={{ color: "#7289da" }}/>
+                <AddCircleTwoToneIcon style={{ color: "#7289da" }} />
               </IconButton>
               <ListItemText primary="Add Code" />
             </ListItem>
-            <ListItem button onClick={(event) => movePageChat(event)} className={ `${classes.btn} ${classes.btn1}` }>
+            <ListItem
+              button
+              onClick={(event) => movePageChat(event)}
+              className={`${classes.btn} ${classes.btn1}`}
+            >
               <IconButton>
-                <ChatIcon style={{ color: "#7289da" }}/>
+                <ChatIcon style={{ color: "#7289da" }} />
               </IconButton>
               <ListItemText primary="Chat Room" />
             </ListItem>

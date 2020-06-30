@@ -25,14 +25,14 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     color: "#fff",
     backgroundSize: "200%",
-    transition: '0.4s', 
-    '&:hover': {
-      backgroundPosition: 'right'
-    }
+    transition: "0.4s",
+    "&:hover": {
+      backgroundPosition: "right",
+    },
   },
   btn1: {
-    backgroundImage: 'linear-gradient(75deg, #36393e , #424549, #bef67a)'
-  }
+    backgroundImage: "linear-gradient(75deg, #36393e , #424549, #7289da)",
+  },
 }));
 export default function AddCode() {
   const [snippet, setSnippet] = React.useState("");
@@ -43,6 +43,7 @@ export default function AddCode() {
   const [guide, setGuide] = React.useState("");
   const dispatch = useDispatch();
   const classes = useStyles();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     let payload;
@@ -92,7 +93,6 @@ export default function AddCode() {
       snippet,
       guide,
     };
-    console.log("ini payload", payload);
     dispatch(AddSnippet(payload));
   };
 
@@ -102,13 +102,11 @@ export default function AddCode() {
 
   const handleGuide = (event) => {
     setGuide(event.target.value);
-    console.log(guide);
   };
 
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    // console.log(name, value);
 
     switch (name) {
       case "keyword":
@@ -155,7 +153,14 @@ export default function AddCode() {
             <h4 className={classes.textField}>Add Guideline</h4>
             <textarea onChange={handleGuide} rows="10" cols="50" />
           </div>
-          <div style={{ alignItems: "center", justifyContent: "center", display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <div>
               <Typography className={classes.textField}>keyword</Typography>
               <TextField
