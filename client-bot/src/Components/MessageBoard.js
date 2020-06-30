@@ -6,24 +6,20 @@ import { Typography } from "@material-ui/core"
 
 const MessageBoard = (props) => {
   const propsData = props.data
-  //console.log(propsData)
   if (propsData) {
     if (Object.keys(propsData)[0] === "adeps") {
       if (typeof propsData.adeps.message === "string") {
         return (
-          <div className="code-block">
-            <CopyBlock
-              text={propsData.adeps.message}
-              language="javascript"
-              theme={github}
-              wrapLines
-            />
+          <div className="message-container">
+            <h4>{Object.keys(propsData)[0]}</h4>
+            <p>{props.data.adeps.message}</p>
           </div>
         )
       } else {
         if (propsData.adeps.message.type === "code") {
           return (
             <div className="code-block">
+              <h4>{Object.keys(propsData)[0]}</h4>
               <CopyBlock
                 text={propsData.adeps.message.content}
                 language="javascript"
@@ -45,7 +41,9 @@ const MessageBoard = (props) => {
       return (
         <div className="user-container">
           <div className="message-container">
-            <Typography>{Object.keys(propsData)[0]}</Typography>
+            <Typography className="user-name">
+              {Object.keys(propsData)[0]}
+            </Typography>
             <p>{props.data.user.message}</p>
           </div>
         </div>

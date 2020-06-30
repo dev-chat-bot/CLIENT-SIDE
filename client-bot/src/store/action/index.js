@@ -148,8 +148,19 @@ export const LoginFacebook = (email) => {
 }
 
 export const AddSnippet = (data) => {
-  return (dispatch) => {
-    // let newSnippet = 
-    console.log(data, 'ini data addSnippet')
+  return async (dispatch) => {
+    try {
+      console.log(data, "ini data addSnippet")
+      let getResponse = await axios({
+        url: baseUrl + "dialogflow" + "/intents",
+        method: "post",
+        data,
+        headers: {
+          token: localStorage.token,
+        },
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
