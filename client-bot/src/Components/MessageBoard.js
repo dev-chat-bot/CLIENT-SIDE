@@ -3,7 +3,7 @@ import "./MessageBoard.css";
 import { CopyBlock } from "react-code-blocks";
 import github from "react-code-blocks/build/cjs/themes/github";
 import { Typography } from "@material-ui/core";
-import { Autorenew } from "@material-ui/icons";
+// import { Autorenew } from "@material-ui/icons";
 
 const MessageBoard = (props) => {
   const propsData = props.data;
@@ -39,6 +39,7 @@ const MessageBoard = (props) => {
                   language="javascript"
                   theme={github}
                   wrapLines
+                  codeBlock
                 />
                 {/* </div> */}
               </div>
@@ -65,8 +66,8 @@ const MessageBoard = (props) => {
           <div className="user-container">
             <div className="code-block">
               <div className="user-name">
-                {/* <Typography>{Object.keys(propsData)[0]}</Typography> */}
-                <Typography>Test Nama User Panjang</Typography>
+                <Typography>{Object.keys(propsData)[0]}</Typography>
+                {/* <Typography>Test Nama User Panjang</Typography> */}
               </div>
               <div className="message-user">
                 <p>{props.data.user.message}</p>

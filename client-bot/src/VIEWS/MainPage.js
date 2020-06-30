@@ -64,24 +64,36 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#424549",
     color: "#fff",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-around",
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
     display: "flex",
     justifyContent: "space-around",
     flexDirection: "column",
-    backgroundColor: "#7289da",
-    color: "#1e2124"
+    backgroundColor: "#282b30",
+    color: "#1e2124",
   },
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
+  btn: {
+    textTransform: "uppercase",
+    cursor: "pointer",
+    color: "#fff",
+    backgroundSize: "200%",
+    transition: '0.4s', 
+    '&:hover': {
+      backgroundPosition: 'right'
+    }
+  },
+  btn1: {
+    backgroundImage: 'linear-gradient(45deg, #36393e , #424549, #7289da)'
+  }
 }));
 
 export default function MainPage() {
@@ -121,7 +133,7 @@ export default function MainPage() {
         <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <Typography variant="h6" noWrap>
-              Chating Room
+              {main ? "Adding Snippet" : "Chating Room"}
             </Typography>
           </div>
           <div>
@@ -143,41 +155,47 @@ export default function MainPage() {
         }}
         anchor="left"
       >
-        <Divider />
-        <Paper
-          style={{ height: "120px", width: "68%", marginLeft: "40px" }}
-          elevation={3}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              height: "100%",
-            }}
+        <div style={{ height: "50%", display: "flex", alignItems: "center" }}>
+          <Paper
+            style={{ height: "120px", width: "68%", marginLeft: "40px" }}
+            elevation={3}
           >
-            <Avatar className={classes.large} src="public/logo192.png"></Avatar>
-            <Typography>NAMAKU</Typography>
-          </div>
-        </Paper>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                height: "100%",
+              }}
+            >
+              <Avatar
+                className={classes.large}
+                src="public/logo192.png"
+              ></Avatar>
+              <Typography>NAMAKU</Typography>
+            </div>
+          </Paper>
+        </div>
         <Divider />
-        <List>
-          {/* <Link to="/add-Code"> */}
-          <ListItem button name="Add" onClick={(event) => movePageAdd(event)}>
-            <ListItemIcon>
-              <AddCircleTwoToneIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add Code" />
-          </ListItem>
-          <ListItem button onClick={(event) => movePageChat(event)}>
-            <ListItemIcon>
-              <ChatIcon />
-            </ListItemIcon>
-            <ListItemText primary="Chat Room" />
-          </ListItem>
-          {/* </Link> */}
-        </List>
+        <div style={{ display: "flex", alignItems: "flex-start", height: "50%" }}>
+          <List style={{ width: "100%" }}>
+            {/* <Link to="/add-Code"> */}
+            <ListItem button name="Add" onClick={(event) => movePageAdd(event)} className={ `${classes.btn} ${classes.btn1}` }>
+              <IconButton>
+                <AddCircleTwoToneIcon style={{ color: "#7289da" }}/>
+              </IconButton>
+              <ListItemText primary="Add Code" />
+            </ListItem>
+            <ListItem button onClick={(event) => movePageChat(event)} className={ `${classes.btn} ${classes.btn1}` }>
+              <IconButton>
+                <ChatIcon style={{ color: "#7289da" }}/>
+              </IconButton>
+              <ListItemText primary="Chat Room" />
+            </ListItem>
+            {/* </Link> */}
+          </List>
+        </div>
       </Drawer>
       <main className={classes.content}>
         {main ? <AddCode /> : <ChatRoom />}

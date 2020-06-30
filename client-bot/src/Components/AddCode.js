@@ -6,12 +6,34 @@ import TextField from "@material-ui/core/TextField";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
-import { Tooltip, Typography, Grid } from "@material-ui/core";
+import { Tooltip, Typography, Grid, Button } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SaveIcon from "@material-ui/icons/Save";
 import { useDispatch } from "react-redux";
 import { AddSnippet } from "../store/action/index";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+  MuiInputBaseInput: {
+    background: "antiquewhite",
+  },
+  textField: {
+    color: "antiquewhite",
+  },
+  btn: {
+    textTransform: "lowercase",
+    cursor: "pointer",
+    color: "#fff",
+    backgroundSize: "200%",
+    transition: '0.4s', 
+    '&:hover': {
+      backgroundPosition: 'right'
+    }
+  },
+  btn1: {
+    backgroundImage: 'linear-gradient(75deg, #36393e , #424549, #bef67a)'
+  }
+}));
 export default function AddCode() {
   const [snippet, setSnippet] = React.useState("");
   // const [Test, setTest] = React.useState("")
@@ -20,7 +42,7 @@ export default function AddCode() {
   const [response, setResponse] = React.useState("");
   const [guide, setGuide] = React.useState("");
   const dispatch = useDispatch();
-
+  const classes = useStyles();
   const handleSubmit = (event) => {
     event.preventDefault();
     let payload;
@@ -101,117 +123,95 @@ export default function AddCode() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        paddingTop: "50px"
-      }}
-    >
-      {/* <div
+    <>
+      <div
         style={{
-          marginTop: "7vh",
-          alignItems: "center",
-          justifyContent: "center",
           display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          height: "90vh",
+          paddingTop: "50px",
         }}
-      > */}
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <AceEditor
-            placeholder="Placeholder Text"
-            mode="javascript"
-            theme="monokai"
-            onChange={(value) => handleSnippet(value)}
-            value={snippet}
-            name="snippet"
-            fontSize={14}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
-            setOptions={{
-              showLineNumbers: true,
-              tabSize: 2,
-              useWorker: false,
-            }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <div
-          // style={{
-          //   margin: "auto",
-          //   marginTop: "40px",
-          // }}
-          >
-            <h4>Add Guideline</h4>
+      >
+        <AceEditor
+          placeholder="Placeholder Text"
+          mode="javascript"
+          theme="monokai"
+          onChange={(value) => handleSnippet(value)}
+          value={snippet}
+          name="snippet"
+          fontSize={14}
+          showPrintMargin={true}
+          showGutter={true}
+          highlightActiveLine={true}
+          setOptions={{
+            showLineNumbers: true,
+            tabSize: 2,
+            useWorker: false,
+          }}
+        />
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div>
+            <h4 className={classes.textField}>Add Guideline</h4>
             <textarea onChange={handleGuide} rows="10" cols="50" />
           </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div>
-            <Typography>keyword</Typography>
-            <TextField
-              id="filled-keyword"
-              label="Keywords"
-              variant="filled"
-              value={keyword}
-              name="keyword"
-              onChange={(event) => handleChange(event)}
-            />
-          </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div>
-            <Typography>set command</Typography>
-            <Tooltip title="if you have more than one command please seperate them by ( , )">
+          <div style={{ alignItems: "center", justifyContent: "center", display: "flex", flexDirection: "column" }}>
+            <div>
+              <Typography className={classes.textField}>keyword</Typography>
               <TextField
-                id="filled-command"
-                label="Set Command"
+                id="filled-keyword"
+                label="Keywords"
                 variant="filled"
-                value={command}
-                name="command"
+                value={keyword}
+                name="keyword"
                 onChange={(event) => handleChange(event)}
+                className={classes.MuiInputBaseInput}
               />
-            </Tooltip>
-          </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div>
-            <Typography>Set Response Hades</Typography>
-            <Tooltip title="if you have more than one response please seperate them by ( , )">
-              <TextField
-                id="filled-Response"
-                label="Response hades"
-                variant="filled"
-                value={response}
-                name="response"
-                onChange={(event) => handleChange(event)}
-              />
-            </Tooltip>
-          </div>
-        </Grid>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "start",
-            flexDirection: "column",
-          }}
-        >
-          <div style={{ justifyContent: "end" }}>
-            <IconButton
-              onClick={(event) => handleSubmit(event)}
-              color="secondary"
-              type="submit"
-            >
-              Save
-              <SaveIcon />
-            </IconButton>
+            </div>
+            <div>
+              <Typography className={classes.textField}>set command</Typography>
+              <Tooltip title="if you have more than one command please seperate them by ( , )">
+                <TextField
+                  id="filled-command"
+                  label="Set Command"
+                  variant="filled"
+                  value={command}
+                  name="command"
+                  onChange={(event) => handleChange(event)}
+                  className={classes.MuiInputBaseInput}
+                />
+              </Tooltip>
+            </div>
+            <div>
+              <Typography className={classes.textField}>
+                Set Response Hades
+              </Typography>
+              <Tooltip title="if you have more than one response please seperate them by ( , )">
+                <TextField
+                  id="filled-Response"
+                  label="Response hades"
+                  variant="filled"
+                  value={response}
+                  name="response"
+                  onChange={(event) => handleChange(event)}
+                  className={classes.MuiInputBaseInput}
+                />
+              </Tooltip>
+            </div>
           </div>
         </div>
-      </Grid>
-      {/* </div> */}
-    </div>
+      </div>
+      <div style={{ alignSelf: "center", justifyContent: "center" }}>
+        <IconButton
+          onClick={(event) => handleSubmit(event)}
+          color="primary"
+          type="button"
+          className={`${classes.btn} ${classes.btn1}`}
+        >
+          Save
+          <SaveIcon />
+        </IconButton>
+      </div>
+    </>
   );
 }
