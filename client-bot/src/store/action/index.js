@@ -11,9 +11,13 @@ export const SET_ERROR = "SET_ERROR"
 export const SET_ISLOGIN = "SET_ISLOGIN"
 export const SET_CHATLIST = "SET_CHATLIST"
 export const SET_ADD_SNIPPET = "SET_ADD_SNIPPET"
+export const SET_TOKEN = "SET_TOKEN"
 
 export const setUser = (data) => {
   return { type: SET_USER, payload: data }
+}
+export const setToken = (token) => {
+  return {type: SET_TOKEN, payload: token}
 }
 export const setEmail = (data) => {
   return { type: SET_EMAIL, payload: data }
@@ -52,9 +56,11 @@ export const SignUp = (data) => {
         confirmPassword: data.confirmPassword,
       })
       //   console.log(NewUser, "ini registrasi");
-      dispatch(setUser(NewUser.data.access_token))
+      dispatch(setToken(NewUser.data.access_token))
+      dispatch(setUser(NewUser.data.username))
       dispatch(setIsLogin(true))
       localStorage.setItem("token", NewUser.data.access_token)
+      sessionStorage.setItem("username", NewUser.data.username)
       if (NewUser.data.access_token) {
         dispatch(setEmail(""))
         dispatch(setUsername(""))
@@ -79,9 +85,11 @@ export const SignIn = (data) => {
         password: data.password,
       })
       // console.log(user.data.access_token, 'ini user')
-      dispatch(setUser(user.data.access_token))
+      dispatch(setToken(user.data.access_token))
       dispatch(setIsLogin(true))
+      dispatch(setUser(user.data.username))
       localStorage.setItem("token", user.data.access_token)
+      sessionStorage.setItem("username", user.data.username)
       if (user.data.access_token) {
         dispatch(setUsername(""))
         dispatch(setPassword(""))
@@ -159,6 +167,28 @@ export const AddSnippet = (data) => {
           token: localStorage.token,
         },
       })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export const loginGoogle = token => {
+  return async (dispatch) => {
+    try {
+      const response = await axios({
+        url: baseUrl + 'googlelogin',
+        method: 'POST',
+        headers: {
+          google_token: token
+        }
+      })
+      const {data} = response
+      dispatch(setToken(data.access_token))
+      dispatch(setIsLogin(true))
+      localStorage.setItem("token", data.access_token)
+      dispatch(setUser(data.username))
+      sessionStorage.setItem("username", data.username)
     } catch (error) {
       console.log(error)
     }
