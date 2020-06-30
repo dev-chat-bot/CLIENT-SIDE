@@ -64,6 +64,10 @@ const Dictaphone = ({
     }
   }
 
+  useEffect(() => {
+    startListening();
+  },[])
+
   const togleListening = () => {
     setStatus(!status);
     if (!status) {
@@ -171,8 +175,9 @@ const Dictaphone = ({
 };
 
 Dictaphone.propTypes = propTypes;
+
 const options = {
-  autoStart: true,
+  autoStart: false,
 };
 
 export default SpeechRecognition(options)(Dictaphone);

@@ -88,7 +88,7 @@ export default function MainPage() {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user) || sessionStorage.getItem("username")
   const [main, setMain] = useState(false);
 
   const handleExitApp = (e) => {
@@ -158,7 +158,7 @@ export default function MainPage() {
             }}
           >
             <Avatar className={classes.large} src="public/logo192.png"></Avatar>
-            <Typography>NAMAKU</Typography>
+            <Typography>{user}</Typography>
           </div>
         </Paper>
         <Divider />

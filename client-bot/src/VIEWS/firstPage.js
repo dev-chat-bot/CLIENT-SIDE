@@ -20,11 +20,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import ModalFirstPage from "../Components/ModalFirstPage";
 import { GitHub } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { SignIn } from "../store/action/index";
+import { SignIn, loginGoogle } from "../store/action/index";
 import { useHistory } from "react-router-dom";
 import { setUsername, setPassword, LoginFacebook } from "../store/action/index";
 // import FacebookLoginButton from "../Components/FacebookLoginButton";
-// import GoogleLogin from "react-google-login";
+import GoogleLogin from "react-google-login";
 
 function Copyright() {
   return (
@@ -52,7 +52,6 @@ export default function FirstPage() {
 
   useEffect(() => {
     if (isLogin || localStorage.token) history.push("/main");
-    
   }, [isLogin, history]);
 
   const resetError = () => {
@@ -64,6 +63,11 @@ export default function FirstPage() {
   const handleOpen = () => {
     modalRef.current.openModal();
   };
+
+  const responseGoogle = (response) => {
+    const token = response.tokenId
+    dispatch(loginGoogle(token))
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -185,10 +189,18 @@ export default function FirstPage() {
                 </Grid>
                 <Grid item>
                   {/* <FacebookLoginButton /> */}
-                  <IconButton color="inherit">
+                  <IconButton color="inherit"
+                  //onClick={event => responseGithub(event)}
+                  >
                     <GitHub />
                   </IconButton>
-                  <Button>Google</Button>
+                  <GoogleLogin
+                    clientId="1020375561760-vdcnh87q4jugnmpdddgeqiij13ijcdqo.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={'single_host_origin'}
+                  />
                 </Grid>
               </Grid>
             </form>
