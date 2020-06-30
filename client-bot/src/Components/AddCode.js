@@ -66,6 +66,7 @@ export default function AddCode() {
       displayName: keyword,
       messageTexts,
       trainingPhrasesParts,
+      snippet
     };
 
     dispatch(AddSnippet(payload));
@@ -73,6 +74,7 @@ export default function AddCode() {
 
   const handleSnippet = (value) => {
     setSnippet(value);
+    console.log(snippet)
   };
 
   const handleChange = (event) => {

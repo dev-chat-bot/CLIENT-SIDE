@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import ModalFirstPage from "../Components/Modal";
+import ModalFirstPage from "../Components/ModalFirstPage";
 import { GitHub } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { SignIn } from "../store/action/index";
