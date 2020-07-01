@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import MessageBoard from "../Components/MessageBoard";
-import SpeechRecognition from "../Components/SpeechRecognition";
-import Paper from "@material-ui/core/Paper";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react"
+import MessageBoard from "../Components/MessageBoard"
+import SpeechRecognition from "../Components/SpeechRecognition"
+import Paper from "@material-ui/core/Paper"
+import { useSelector } from "react-redux"
 
 export default function ChatRoom() {
-  const messageChatList = useSelector((state) => state.messageChatList);
+  const messageChatList = useSelector((state) => state.messageChatList)
 
-  useEffect(() => {}, [messageChatList]);
+  useEffect(() => {}, [messageChatList])
 
   return (
     <div>
@@ -22,17 +22,33 @@ export default function ChatRoom() {
           overflow: "scroll",
         }}
       >
-        <div>
+        <div
+          style={{
+            position: "relative",
+            // marginTop: "30px",
+            // top: "5px",
+            bottom: "40px",
+            // height: "80vh",
+            // overflow: "auto",
+          }}
+        >
           {messageChatList.map((element, index) => {
-            return <MessageBoard data={element} key={index} />;
+            return <MessageBoard data={element} key={index} />
           })}
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Paper style={{ width: "100%", borderRadius: "30px" }}>
+        <Paper
+          style={{
+            width: "100%",
+            borderRadius: "30px",
+            position: "relative",
+            bottom: "30px",
+          }}
+        >
           <SpeechRecognition />
         </Paper>
       </div>
     </div>
-  );
+  )
 }
