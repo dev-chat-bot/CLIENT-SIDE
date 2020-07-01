@@ -11,6 +11,7 @@
   columns: 8;
   align-items: flex-end;
   margin-right: 10px;
+  padding-top: 40px;
 }
 
 .bot-container {
@@ -37,7 +38,7 @@
   margin-right: 10px;
 }
 
-.message-user {
+/* .message-user {
   height: 30px;
   width: auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -47,15 +48,16 @@
   align-items: center;
   display: flex;
   background-color: white;
-}
+} */
 
 .message-bot {
-  height: 30px;
+  height: 50px;
   width: 400px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px;
   margin-bottom: 10px;
-  padding: 0px 10px 0px 10px;
+  /* padding: 0px 10px 0px 10px; */
+  padding: 8px 10px;
   background-color: white;
   /* align-items: center;
   display: flex; */
@@ -81,6 +83,22 @@
   /* align-items: center;
   display: flex; */
   margin-bottom: 10px;
+  /* width: 600px; */
+  max-width: 608px;
+  /* overflow: scroll; */
+}
+.message-bot-2 {
+  height: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 0px 10px 0px 10px;
+  background-color: white;
+  /* align-items: center;
+  display: flex; */
+  margin-bottom: 10px;
+  /* width: 600px; */
+  /* overflow: scroll; */
 }
 
 .user-name {

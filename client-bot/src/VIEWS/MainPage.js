@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Avatar from "@material-ui/core/Avatar";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import IconButton from "@material-ui/core/IconButton";
+import React, { useEffect, useState } from "react"
+import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles"
+import Drawer from "@material-ui/core/Drawer"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import List from "@material-ui/core/List"
+import Typography from "@material-ui/core/Typography"
+import Paper from "@material-ui/core/Paper"
+import Divider from "@material-ui/core/Divider"
+import Avatar from "@material-ui/core/Avatar"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import IconButton from "@material-ui/core/IconButton"
 // import InboxIcon from "@material-ui/icons/MoveToInbox";
 // import MailIcon from "@material-ui/icons/Mail";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setIsLogin, setToken } from "../store/action/index";
-import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone";
-import ChatIcon from "@material-ui/icons/Chat";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp"
+import { useHistory } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { setIsLogin, setToken } from "../store/action/index"
+import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone"
+import ChatIcon from "@material-ui/icons/Chat"
 // import { Link } from "react-router-dom";
-import ChatRoom from "../Components/ChatRoom";
-import AddCode from "../Components/AddCode";
-import Background from '../image/background.png'
-
+import ChatRoom from "../Components/ChatRoom"
+import AddCode from "../Components/AddCode"
+import Background from "../image/background.png"
+import avatar from "../image/avatare smile.png"
 
 // const DummyData = [
 //   {
@@ -46,7 +46,7 @@ import Background from '../image/background.png'
 //     message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
 //   },
 // ];
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     backgroundColor: "#282b30",
     color: "#1e2124",
-    backgroundImage: `url(${Background})`
+    backgroundImage: `url(${Background})`,
   },
   large: {
     width: theme.spacing(7),
@@ -103,39 +103,38 @@ const useStyles = makeStyles((theme) => ({
   cardColor: {
     backgroundImage: "linear-gradient(45deg, #36393e , #7289da, #ffd95a)",
   },
-
-}));
+}))
 
 export default function MainPage() {
-  const classes = useStyles();
-  const history = useHistory();
-  const dispatch = useDispatch();
+  const classes = useStyles()
+  const history = useHistory()
+  const dispatch = useDispatch()
   const user =
-    useSelector((state) => state.user) || sessionStorage.getItem("username");
-  const [main, setMain] = useState(false);
-  const isLogin = useSelector((state) => state.isLogin);
+    useSelector((state) => state.user) || sessionStorage.getItem("username")
+  const [main, setMain] = useState(false)
+  const isLogin = useSelector((state) => state.isLogin)
 
   const handleExitApp = (e) => {
-    localStorage.clear();
-    dispatch(setIsLogin(false));
-  };
+    localStorage.clear()
+    dispatch(setIsLogin(false))
+  }
 
   useEffect(() => {
     if (localStorage.token) {
-      dispatch(setIsLogin(true));
-      dispatch(setToken(localStorage.token));
+      dispatch(setIsLogin(true))
+      dispatch(setToken(localStorage.token))
     }
-    if (!localStorage.token) history.push("/");
-  }, [isLogin]);
+    if (!localStorage.token) history.push("/")
+  }, [isLogin])
 
   const movePageAdd = (event) => {
-    event.preventDefault();
-    setMain(true);
-  };
+    event.preventDefault()
+    setMain(true)
+  }
   const movePageChat = (event) => {
-    event.preventDefault();
-    setMain(false);
-  };
+    event.preventDefault()
+    setMain(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -144,7 +143,7 @@ export default function MainPage() {
         <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <Typography variant="h6" noWrap>
-              {main ? "Adding Snippet" : "Chating Room"}
+              {main ? "Train Hinata" : "Chating Room"}
             </Typography>
           </div>
           <div>
@@ -168,7 +167,15 @@ export default function MainPage() {
         anchor="left"
       >
         <div style={{ height: "50%", display: "flex", alignItems: "center" }}>
-          <Paper
+          <div>
+            <img src={avatar} style={{ height: "150px", width: "250px" }} />
+            <div
+              style={{ color: "white", marginLeft: "90px", marginTop: "20px" }}
+            >
+              <Typography>{` Hi, ${user}`}</Typography>
+            </div>
+          </div>
+          {/* <Paper
             style={{ height: "120px", width: "68%", marginLeft: "40px" }}
             elevation={3}
             className={`${classes.btn} ${classes.cardColor}`}
@@ -182,12 +189,15 @@ export default function MainPage() {
                 height: "100%",
               }}
             >
-              <Avatar className={classes.large} src="https://picsum.photos/200/300?random=2"></Avatar>
+              <Avatar
+                className={classes.large}
+                src="https://picsum.photos/200/300?random=2"
+              ></Avatar>
               <div>
                 <Typography>{user}</Typography>
               </div>
             </div>
-          </Paper>
+          </Paper> */}
         </div>
         <Divider />
         <div
@@ -204,7 +214,7 @@ export default function MainPage() {
               <IconButton>
                 <AddCircleTwoToneIcon style={{ color: "#7289da" }} />
               </IconButton>
-              <ListItemText primary="Add Code" />
+              <ListItemText primary="Train Hinata" />
             </ListItem>
             <ListItem
               button
@@ -224,5 +234,5 @@ export default function MainPage() {
         {main ? <AddCode /> : <ChatRoom />}
       </main>
     </div>
-  );
+  )
 }
