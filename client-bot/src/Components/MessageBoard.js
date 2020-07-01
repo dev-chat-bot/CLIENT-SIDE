@@ -91,7 +91,7 @@ const MessageBoard = (props) => {
           <div className="user-container">
             <div className="code-block">
               <div className="user-name">
-                <Typography color="initial">
+                <Typography>
                   {Object.keys(propsData)[0]}
                 </Typography>
               </div>

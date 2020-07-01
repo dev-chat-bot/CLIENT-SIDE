@@ -13,6 +13,7 @@ import {
   setConfirmPassword,
 } from "../store/action/index";
 
+
 const ModalFirstPage = forwardRef((props, ref) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
@@ -62,11 +63,11 @@ const ModalFirstPage = forwardRef((props, ref) => {
     event.preventDefault();
     if (!email || !password || !username || !confirmPassword) {
       setError("please fill all field");
-      if (error) {
-        setTimeout(() => {
-          setError("");
-        }, 3000);
-      }
+      // if (error) {
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      // }
     } else {
       const payload = {
         email: email,
@@ -80,7 +81,7 @@ const ModalFirstPage = forwardRef((props, ref) => {
 
   if (open) {
     return ReactDOM.createPortal(
-      <div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -92,19 +93,32 @@ const ModalFirstPage = forwardRef((props, ref) => {
         >
           <Fade in={open}>
             <div className={props.classes.paperModal}>
+              <Typography component="h1" variant="h5">
+                Sign Up
+              </Typography>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {error ? (
+                  <Typography component="h1" variant="h5">
+                    {error}
+                  </Typography>
+                ) : (
+                  <Typography>
+                    {" "}
+                    Welcome to Hinata's Home. please to register to come in{" "}
+                  </Typography>
+                )}
+              </div>
               <form
                 className={props.classes.form}
                 noValidate
                 onSubmit={(event) => handleSubmitModal(event)}
               >
-                <Typography component="h1" variant="h5">
-                  Sign Up
-                </Typography>
-                {error && (
-                  <Typography component="h1" variant="h5">
-                    {error}
-                  </Typography>
-                )}
                 <TextField
                   variant="outlined"
                   margin="normal"
