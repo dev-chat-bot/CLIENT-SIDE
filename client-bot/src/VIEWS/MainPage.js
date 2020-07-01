@@ -8,10 +8,8 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
-import Avatar from "@material-ui/core/Avatar";
 import clsx from "clsx";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -23,6 +21,7 @@ import ChatIcon from "@material-ui/icons/Chat";
 import ChatRoom from "../Components/ChatRoom";
 import AddCode from "../Components/AddCode";
 import Background from "../image/background.png";
+import hinataLogo from "../image/hinataLogo.png";
 import avatar from "../image/avatare smile.png";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -34,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     backgroundImage: `url(${Background})`,
-
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -107,6 +105,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     backgroundColor: "transparent",
     color: "#1e2124",
+    scrollBehavior: "smooth",
+    clear: "both",
   },
   large: {
     width: theme.spacing(7),
@@ -197,9 +197,9 @@ export default function MainPage() {
             <MenuIcon />
           </IconButton>
           <div>
-            <Typography variant="h6" noWrap>
-              {main ? "Train Hinata" : "Chating Room"}
-            </Typography>
+            <div>
+              <img alt="Hinata" src={hinataLogo} style={{ height: "50px", width: "120px" }} />
+            </div>
           </div>
           <div>
             <IconButton
@@ -235,20 +235,14 @@ export default function MainPage() {
             )}
           </IconButton>
         </div>
-        <div style={{ height: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {/* <div>
-            <img src={avatar} style={{ height: "150px", width: "250px" }} />
-            <div
-              style={{
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography>{` Hi, ${user}`}</Typography>
-            </div>
-          </div> */}
+        <div
+          style={{
+            height: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Paper
             style={{ height: "120px", width: "68%" }}
             elevation={3}
@@ -267,10 +261,12 @@ export default function MainPage() {
                 className={classes.large}
                 src="https://picsum.photos/200/300?random=2"
               ></Avatar> */}
-              <img src={avatar} style={{ height: "150px", width: "250px" }} />
-              <div>
-                {open && <Typography>{user}</Typography>}
-              </div>
+              <img
+                alt="Hinata"
+                src={avatar}
+                style={{ height: "150px", width: "250px" }}
+              />
+              <div>{open && <Typography>{user}</Typography>}</div>
             </div>
           </Paper>
         </div>
@@ -283,8 +279,7 @@ export default function MainPage() {
             justifyContent: "center",
           }}
         >
-          <List style={{ width: "100%"}}>
-            {/* <Link to="/add-Code"> */}
+          <List style={{ width: "100%" }}>
             <ListItem
               button
               name="Add"
@@ -294,7 +289,10 @@ export default function MainPage() {
               <IconButton>
                 <AddCircleTwoToneIcon style={{ color: "#7289da" }} />
               </IconButton>
-              <ListItemText style={{ marginLeft: "10px" }} primary="Train Hinata" />
+              <ListItemText
+                style={{ marginLeft: "10px" }}
+                primary="Train Hinata"
+              />
             </ListItem>
             <ListItem
               button
@@ -304,9 +302,11 @@ export default function MainPage() {
               <IconButton>
                 <ChatIcon style={{ color: "#7289da" }} />
               </IconButton>
-              <ListItemText style={{ marginLeft: "10px" }} primary="Chat Room"/>
+              <ListItemText
+                style={{ marginLeft: "10px" }}
+                primary="Chat Room"
+              />
             </ListItem>
-            {/* </Link> */}
           </List>
         </div>
       </Drawer>

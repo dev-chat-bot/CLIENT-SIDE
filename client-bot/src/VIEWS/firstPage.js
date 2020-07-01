@@ -1,42 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { CssBaseline } from "@material-ui/core";
 import {
-  Avatar,
+  // Avatar,
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
+  // FormControlLabel,
+  // Checkbox,
   Container,
   Typography,
   Box,
   Grid,
   Link,
   Card,
-  IconButton,
+  // IconButton,
   Snackbar,
+  // Hidden,
 } from "@material-ui/core";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+// import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import ModalFirstPage from "../Components/ModalFirstPage";
-import { GitHub } from "@material-ui/icons";
+// import { GitHub } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { SignIn, loginGoogle } from "../store/action/index";
 import { useHistory } from "react-router-dom";
-import { setUsername, setPassword, LoginFacebook } from "../store/action/index";
+import { setUsername, setPassword } from "../store/action/index";
 // import FacebookLoginButton from "../Components/FacebookLoginButton";
 import GoogleLogin from "react-google-login";
 import { setIsLogin, setToken } from "../store/action/index";
 import avatar from "../image/image_flattener_share_7b9100ca-removebg-preview.png";
 import Background from "../image/background.png";
+import hinataLogo from "../image/hinataLogo.png";
+
 
 function Copyright() {
   return (
     <Typography variant="body2" align="center">
       {"Copyright © "}
-      <Link color="inherit">
-        Hinata
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link color="inherit">Hinata</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -109,8 +109,14 @@ export default function FirstPage() {
       <Container component="main" maxWidth="xs">
         <Card width="50%" style={{ borderRadius: "50px" }}>
           <div className={classes.paper}>
-            <div>
-              <img src={avatar} style={{ width: "350px", height: "170px" }} />
+            <div style={{ display: "flex", justifyContent: "flex", flexDirection: "column", alignItems: "center" }}>
+
+              <img
+                alt="Hinata"
+                src={hinataLogo}
+                style={{ height: "50px", width: "120px", position: "fixed" }}
+              />
+              <img alt="Hinata" src={avatar} style={{ width: "350px", height: "170px" }} />
             </div>
             {error ? (
               <Typography component="h1" variant="h5">
@@ -167,10 +173,10 @@ export default function FirstPage() {
                 autoComplete="current-password"
                 onChange={(event) => dispatch(setPassword(event.target.value))}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -182,9 +188,9 @@ export default function FirstPage() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  {/* <Link href="#" variant="body2">
                     Forgot password?
-                  </Link>
+                  </Link> */}
                   <p>
                     Don't have an account?{" "}
                     <Link onClick={(event) => handleOpen(event)}>Sign Up</Link>
@@ -196,12 +202,15 @@ export default function FirstPage() {
                 </Grid>
                 <Grid item>
                   {/* <FacebookLoginButton /> */}
-                  <IconButton
-                    color="inherit"
-                    //onClick={event => responseGithub(event)}
-                  >
-                    <GitHub />
-                  </IconButton>
+                  {/* <Hidden>
+                    <IconButton
+                      color="inherit"
+                      type="hidden"
+                      onClick={event => responseGithub(event)}
+                    >
+                      <GitHub />
+                    </IconButton>
+                  </Hidden> */}
                   <GoogleLogin
                     clientId="1020375561760-vdcnh87q4jugnmpdddgeqiij13ijcdqo.apps.googleusercontent.com"
                     buttonText="Login"
@@ -232,8 +241,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paperModal: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
+    border: "1px solid #000",
+    boxShadow: theme.shadows[2],
     padding: theme.spacing(2, 4, 3),
     display: "flex",
     justifyContent: "center",
@@ -241,7 +250,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50px",
     width: "398px",
     height: "647px",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   modal: {
     display: "flex",

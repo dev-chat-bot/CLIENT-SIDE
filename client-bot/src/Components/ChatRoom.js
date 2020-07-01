@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import MessageBoard from "../Components/MessageBoard"
 import SpeechRecognition from "../Components/SpeechRecognition"
 import Paper from "@material-ui/core/Paper"
@@ -6,8 +6,18 @@ import { useSelector } from "react-redux"
 
 export default function ChatRoom() {
   const messageChatList = useSelector((state) => state.messageChatList)
+  const messageEndRef = useRef(null)
 
-  useEffect(() => {}, [messageChatList])
+  const scrollToBottom = () => {
+    messageEndRef.current.scrollIntoView({
+      behavior: "smooth"
+    })
+  }
+
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messageChatList])
 
   return (
     <div>
@@ -25,16 +35,14 @@ export default function ChatRoom() {
         <div
           style={{
             position: "relative",
-            // marginTop: "30px",
-            // top: "5px",
             bottom: "40px",
-            // height: "80vh",
-            // overflow: "auto",
+            overflow: "scroll"
           }}
         >
           {messageChatList.map((element, index) => {
             return <MessageBoard data={element} key={index} />
           })}
+          <div ref={messageEndRef}></div>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>

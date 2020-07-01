@@ -78,15 +78,16 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px;
   margin-bottom: 10px;
-  padding: 0px 10px 0px 10px;
+  padding: 0px 10px 0px 0px;
   background-color: white;
   /* align-items: center;
   display: flex; */
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   /* width: 600px; */
-  max-width: 608px;
+  /* max-width: 608px; */
   /* overflow: scroll; */
   line-break: auto;
+  flex-wrap: wrap;
 }
 .message-bot-2 {
   height: auto;
@@ -117,4 +118,8 @@
 
 .user-name {
   font-weight: bold !important;
+}
+
+.message-bot-1 span {
+  white-space: inherit !important;
 }

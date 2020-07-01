@@ -1,16 +1,16 @@
-import React from "react"
-import "./MessageBoard.css"
-import { CopyBlock, CodeBlock } from "react-code-blocks"
-import github from "react-code-blocks/build/cjs/themes/github"
-import { Typography } from "@material-ui/core"
+import React from "react";
+import "./MessageBoard.css";
+import { CopyBlock, CodeBlock } from "react-code-blocks";
+import github from "react-code-blocks/build/cjs/themes/github";
+import { Typography } from "@material-ui/core";
 // import { Autorenew } from "@material-ui/icons";
-import YouTube from "react-youtube-embed"
-import { useSelector } from "react-redux"
+import YouTube from "react-youtube-embed";
+import { useSelector } from "react-redux";
 
 const MessageBoard = (props) => {
   const user =
-    useSelector((state) => state.user) || sessionStorage.getItem("username")
-  const propsData = props.data
+    useSelector((state) => state.user) || sessionStorage.getItem("username");
+  const propsData = props.data;
   if (propsData) {
     if (Object.keys(propsData)[0] === "Hinata") {
       if (propsData.Hinata.videoId) {
@@ -23,7 +23,7 @@ const MessageBoard = (props) => {
               <YouTube id={propsData.Hinata.videoId}></YouTube>
             </div>
           </>
-        )
+        );
       }
       if (typeof propsData.Hinata.message === "string") {
         return (
@@ -43,13 +43,13 @@ const MessageBoard = (props) => {
               </div>
             </div>
           </div>
-        )
+        );
       } else {
         if (propsData.Hinata.message.type === "code") {
           return (
             <div className="bot-container">
               <div className="code-block">
-                <div className="message-bot-1">
+                <div className="message-bot-12">
                   <CopyBlock
                     text={propsData.Hinata.message.content}
                     language="javascript"
@@ -60,7 +60,7 @@ const MessageBoard = (props) => {
                 </div>
               </div>
             </div>
-          )
+          );
         } else {
           return (
             <div className="bot-container">
@@ -82,7 +82,7 @@ const MessageBoard = (props) => {
                 </div>
               </div>
             </div>
-          )
+          );
         }
       }
     } else {
@@ -91,9 +91,7 @@ const MessageBoard = (props) => {
           <div className="user-container">
             <div className="code-block">
               <div className="user-name">
-                <Typography>
-                  {Object.keys(propsData)[0]}
-                </Typography>
+                <Typography>{Object.keys(propsData)[0]}</Typography>
               </div>
               <div className="message-bot-2">
                 {/* <p>{props.data[user].message}</p> */}
@@ -108,9 +106,9 @@ const MessageBoard = (props) => {
             </div>
           </div>
         </>
-      )
+      );
     }
   }
-}
+};
 
-export default MessageBoard
+export default MessageBoard;

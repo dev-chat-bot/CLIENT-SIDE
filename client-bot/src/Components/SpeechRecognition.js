@@ -101,6 +101,12 @@ const Dictaphone = ({
     setText("");
   };
 
+  const KeyPress = (e) => {
+    if ( e.keyCode === "13" ) {
+      handleSubmit(e)
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (text) {
@@ -175,6 +181,7 @@ const Dictaphone = ({
           editable="true"
           multiline={true}
           onChange={(event) => handleChange(event)}
+          onKeyDown={(e) => KeyPress(e)}
           itemScope
         />
         <IconButton color="primary" type="submit">

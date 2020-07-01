@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField"
 import AceEditor from "react-ace"
 import "ace-builds/src-noconflict/mode-javascript"
 import "ace-builds/src-noconflict/theme-monokai"
-import { Tooltip, Typography, Grid, Button } from "@material-ui/core"
+import { Tooltip, Typography } from "@material-ui/core"
 import IconButton from "@material-ui/core/IconButton"
 import SaveIcon from "@material-ui/icons/Save"
 import { useDispatch } from "react-redux"
@@ -235,7 +235,7 @@ export default function AddCode() {
           alignSelf: "center",
           justifyContent: "center",
           position: "relative",
-          bottom: "70px",
+          clear: "both"
         }}
       >
         <IconButton

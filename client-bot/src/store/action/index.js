@@ -118,6 +118,7 @@ export const UserRequest = (text) => {
           token: localStorage.token,
         },
       })
+      console.log(getResponse.data, 'ini getresponse')
       if (typeof getResponse.data === "object") {
         if (getResponse.data.videoId) {
           dispatch(
@@ -166,7 +167,7 @@ export const AddSnippet = (data) => {
   return async (dispatch) => {
     try {
       let getResponse = await axios({
-        url: baseUrl + "dialogflow" + "/intents",
+        url: baseUrl + "dialogflow/intents",
         method: "post",
         data,
         headers: {
