@@ -96,6 +96,7 @@ export const SignIn = (data) => {
         dispatch(setPassword(""))
       }
     } catch (error) {
+      console.log(error)
       dispatch(setError(error.response.data.error))
       setTimeout(() => {
         dispatch(setError(""))

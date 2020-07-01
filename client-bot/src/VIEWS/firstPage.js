@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { CssBaseline } from "@material-ui/core"
+import React, { useState, useEffect } from "react";
+import { CssBaseline } from "@material-ui/core";
 import {
   Avatar,
   Button,
@@ -14,85 +14,86 @@ import {
   Card,
   IconButton,
   Snackbar,
-} from "@material-ui/core"
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
-import { makeStyles } from "@material-ui/core/styles"
-import ModalFirstPage from "../Components/ModalFirstPage"
-import { GitHub } from "@material-ui/icons"
-import { useDispatch, useSelector } from "react-redux"
-import { SignIn, loginGoogle } from "../store/action/index"
-import { useHistory } from "react-router-dom"
-import { setUsername, setPassword, LoginFacebook } from "../store/action/index"
+} from "@material-ui/core";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import { makeStyles } from "@material-ui/core/styles";
+import ModalFirstPage from "../Components/ModalFirstPage";
+import { GitHub } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { SignIn, loginGoogle } from "../store/action/index";
+import { useHistory } from "react-router-dom";
+import { setUsername, setPassword, LoginFacebook } from "../store/action/index";
 // import FacebookLoginButton from "../Components/FacebookLoginButton";
-import GoogleLogin from "react-google-login"
-import { setIsLogin, setToken } from "../store/action/index"
-import avatar from "../image/image_flattener_share_7b9100ca-removebg-preview.png"
+import GoogleLogin from "react-google-login";
+import { setIsLogin, setToken } from "../store/action/index";
+import avatar from "../image/image_flattener_share_7b9100ca-removebg-preview.png";
+import Background from "../image/background.png";
 
 function Copyright() {
   return (
     <Typography variant="body2" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit">
         Hinata
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
-  )
+  );
 }
 
 export default function FirstPage() {
-  const classes = useStyles()
-  const [error, setError] = useState("")
-  const message = useSelector((state) => state.error)
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const isLogin = useSelector((state) => state.isLogin)
-  const username = useSelector((state) => state.username)
-  const password = useSelector((state) => state.password)
-  const modalRef = React.useRef()
+  const classes = useStyles();
+  const [error, setError] = useState("");
+  const message = useSelector((state) => state.error);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const isLogin = useSelector((state) => state.isLogin);
+  const username = useSelector((state) => state.username);
+  const password = useSelector((state) => state.password);
+  const modalRef = React.useRef();
 
   useEffect(() => {
     if (localStorage.token) {
-      dispatch(setIsLogin(true))
-      dispatch(setToken(localStorage.token))
+      dispatch(setIsLogin(true));
+      dispatch(setToken(localStorage.token));
     }
-    if (localStorage.token) history.push("/main")
-  }, [isLogin])
+    if (localStorage.token) history.push("/main");
+  }, [isLogin]);
 
   const resetError = () => {
     setTimeout(() => {
-      setError("")
-    }, 3000)
-  }
+      setError("");
+    }, 3000);
+  };
 
   const handleOpen = () => {
-    modalRef.current.openModal()
-  }
+    modalRef.current.openModal();
+  };
 
   const responseGoogle = (response) => {
-    const token = response.tokenId
-    dispatch(loginGoogle(token))
-  }
+    const token = response.tokenId;
+    dispatch(loginGoogle(token));
+  };
 
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     let payload = {
       username,
       password,
-    }
+    };
     if (username && password) {
-      dispatch(SignIn(payload))
+      dispatch(SignIn(payload));
     } else {
       if (!username) {
-        setError("Username is empty")
+        setError("Username is empty");
       } else {
-        setError("Password is empty")
+        setError("Password is empty");
       }
-      resetError()
+      resetError();
     }
-    if (isLogin) history.push("/main")
-  }
+    if (isLogin) history.push("/main");
+  };
 
   return (
     <div
@@ -100,20 +101,17 @@ export default function FirstPage() {
         alignItems: "center",
         justifyContent: "center",
         display: "flex",
-        backgroundColor: "black",
+        backgroundImage: `url(${Background})`,
         height: "100vh",
       }}
     >
       <CssBaseline />
       <Container component="main" maxWidth="xs">
-        <Card width="50%">
+        <Card width="50%" style={{ borderRadius: "50px" }}>
           <div className={classes.paper}>
             <div>
               <img src={avatar} style={{ width: "350px", height: "170px" }} />
             </div>
-            {/* <Avatar className={classes.avatar}>
-              <AccountCircleOutlinedIcon />
-            </Avatar> */}
             {error ? (
               <Typography component="h1" variant="h5">
                 {error}
@@ -221,7 +219,7 @@ export default function FirstPage() {
         </Card>
       </Container>
     </div>
-  )
+  );
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -230,6 +228,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    borderRadius: "50px",
   },
   paperModal: {
     backgroundColor: theme.palette.background.paper,
@@ -239,7 +238,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: "50px",
+    width: "398px",
+    height: "647px",
+    flexDirection: "column"
   },
   modal: {
     display: "flex",
@@ -258,4 +260,4 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}))
+}));

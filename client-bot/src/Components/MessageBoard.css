@@ -86,6 +86,7 @@
   /* width: 600px; */
   max-width: 608px;
   /* overflow: scroll; */
+  line-break: auto;
 }
 .message-bot-2 {
   height: auto;
@@ -105,7 +106,7 @@
   position: relative;
   right: -10px;
   margin-right: 10px;
-  color: mintcream;
+  color: lightgoldenrodyellow;
 }
 .bot-name {
   position: relative;

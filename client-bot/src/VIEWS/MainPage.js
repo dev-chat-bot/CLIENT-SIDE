@@ -1,65 +1,87 @@
-import React, { useEffect, useState } from "react"
-import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles"
-import Drawer from "@material-ui/core/Drawer"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import List from "@material-ui/core/List"
-import Typography from "@material-ui/core/Typography"
-import Paper from "@material-ui/core/Paper"
-import Divider from "@material-ui/core/Divider"
-import Avatar from "@material-ui/core/Avatar"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
-import ListItemText from "@material-ui/core/ListItemText"
-import IconButton from "@material-ui/core/IconButton"
-// import InboxIcon from "@material-ui/icons/MoveToInbox";
-// import MailIcon from "@material-ui/icons/Mail";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp"
-import { useHistory } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { setIsLogin, setToken } from "../store/action/index"
-import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone"
-import ChatIcon from "@material-ui/icons/Chat"
-// import { Link } from "react-router-dom";
-import ChatRoom from "../Components/ChatRoom"
-import AddCode from "../Components/AddCode"
-import Background from "../image/background.png"
-import avatar from "../image/avatare smile.png"
+import React, { useEffect, useState } from "react";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
+import Avatar from "@material-ui/core/Avatar";
+import clsx from "clsx";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import IconButton from "@material-ui/core/IconButton";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsLogin, setToken } from "../store/action/index";
+import AddCircleTwoToneIcon from "@material-ui/icons/AddCircleTwoTone";
+import ChatIcon from "@material-ui/icons/Chat";
+import ChatRoom from "../Components/ChatRoom";
+import AddCode from "../Components/AddCode";
+import Background from "../image/background.png";
+import avatar from "../image/avatare smile.png";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
-// const DummyData = [
-//   {
-//     name: "YODI",
-//     message: "Ku menangisss membayangakan",
-//   },
-//   {
-//     name: "Fariss",
-//     message:
-//       "Betapa kejamnya dirimu atas diriku kau duakan cinta ini, kau pergi bersamanya ",
-//   },
-//   {
-//     name: "Hafidz",
-//     message: "Ku menangis melepaskan Kepergian dirimu dari sisi hidupku",
-//   },
-//   {
-//     name: "Kalys",
-//     message: "Harus selalu kau tahu Akulah hati yang telah kau sakiti",
-//   },
-// ];
-const drawerWidth = 240
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    backgroundImage: `url(${Background})`,
+
   },
   appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
     backgroundColor: "#282b30",
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    whiteSpace: "nowrap",
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    backgroundColor: "#282b30",
+  },
+  drawerClose: {
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: "hidden",
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9) + 1,
+    },
+    backgroundColor: "#282b30",
   },
   drawerPaper: {
     width: drawerWidth,
@@ -69,16 +91,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
   },
   // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
     display: "flex",
     justifyContent: "space-around",
     flexDirection: "column",
-    backgroundColor: "#282b30",
+    backgroundColor: "transparent",
     color: "#1e2124",
-    backgroundImage: `url(${Background})`,
   },
   large: {
     width: theme.spacing(7),
@@ -103,44 +131,71 @@ const useStyles = makeStyles((theme) => ({
   cardColor: {
     backgroundImage: "linear-gradient(45deg, #36393e , #7289da, #ffd95a)",
   },
-}))
+}));
 
 export default function MainPage() {
-  const classes = useStyles()
-  const history = useHistory()
-  const dispatch = useDispatch()
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const theme = useTheme();
+
   const user =
-    useSelector((state) => state.user) || sessionStorage.getItem("username")
-  const [main, setMain] = useState(false)
-  const isLogin = useSelector((state) => state.isLogin)
+    useSelector((state) => state.user) || sessionStorage.getItem("username");
+  const [main, setMain] = useState(false);
+  const isLogin = useSelector((state) => state.isLogin);
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const handleExitApp = (e) => {
-    localStorage.clear()
-    dispatch(setIsLogin(false))
-  }
+    localStorage.clear();
+    dispatch(setIsLogin(false));
+  };
 
   useEffect(() => {
     if (localStorage.token) {
-      dispatch(setIsLogin(true))
-      dispatch(setToken(localStorage.token))
+      dispatch(setIsLogin(true));
+      dispatch(setToken(localStorage.token));
     }
-    if (!localStorage.token) history.push("/")
-  }, [isLogin])
+    if (!localStorage.token) history.push("/");
+  }, [isLogin]);
 
   const movePageAdd = (event) => {
-    event.preventDefault()
-    setMain(true)
-  }
+    event.preventDefault();
+    setMain(true);
+  };
   const movePageChat = (event) => {
-    event.preventDefault()
-    setMain(false)
-  }
+    event.preventDefault();
+    setMain(false);
+  };
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
         <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
           <div>
             <Typography variant="h6" noWrap>
               {main ? "Train Hinata" : "Chating Room"}
@@ -159,24 +214,43 @@ export default function MainPage() {
         </Toolbar>
       </AppBar>
       <Drawer
-        className={classes.drawer}
         variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
         classes={{
-          paper: classes.drawerPaper,
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
         }}
-        anchor="left"
       >
-        <div style={{ height: "50%", display: "flex", alignItems: "center" }}>
-          <div>
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+          </IconButton>
+        </div>
+        <div style={{ height: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {/* <div>
             <img src={avatar} style={{ height: "150px", width: "250px" }} />
             <div
-              style={{ color: "white", marginLeft: "90px", marginTop: "20px" }}
+              style={{
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               <Typography>{` Hi, ${user}`}</Typography>
             </div>
-          </div>
-          {/* <Paper
-            style={{ height: "120px", width: "68%", marginLeft: "40px" }}
+          </div> */}
+          <Paper
+            style={{ height: "120px", width: "68%" }}
             elevation={3}
             className={`${classes.btn} ${classes.cardColor}`}
           >
@@ -189,21 +263,27 @@ export default function MainPage() {
                 height: "100%",
               }}
             >
-              <Avatar
+              {/* <Avatar
                 className={classes.large}
                 src="https://picsum.photos/200/300?random=2"
-              ></Avatar>
+              ></Avatar> */}
+              <img src={avatar} style={{ height: "150px", width: "250px" }} />
               <div>
-                <Typography>{user}</Typography>
+                {open && <Typography>{user}</Typography>}
               </div>
             </div>
-          </Paper> */}
+          </Paper>
         </div>
         <Divider />
         <div
-          style={{ display: "flex", alignItems: "flex-start", height: "50%" }}
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            height: "50%",
+            justifyContent: "center",
+          }}
         >
-          <List style={{ width: "100%" }}>
+          <List style={{ width: "100%"}}>
             {/* <Link to="/add-Code"> */}
             <ListItem
               button
@@ -214,7 +294,7 @@ export default function MainPage() {
               <IconButton>
                 <AddCircleTwoToneIcon style={{ color: "#7289da" }} />
               </IconButton>
-              <ListItemText primary="Train Hinata" />
+              <ListItemText style={{ marginLeft: "10px" }} primary="Train Hinata" />
             </ListItem>
             <ListItem
               button
@@ -224,7 +304,7 @@ export default function MainPage() {
               <IconButton>
                 <ChatIcon style={{ color: "#7289da" }} />
               </IconButton>
-              <ListItemText primary="Chat Room" />
+              <ListItemText style={{ marginLeft: "10px" }} primary="Chat Room"/>
             </ListItem>
             {/* </Link> */}
           </List>
@@ -234,5 +314,5 @@ export default function MainPage() {
         {main ? <AddCode /> : <ChatRoom />}
       </main>
     </div>
-  )
+  );
 }
